@@ -22,7 +22,7 @@ public class PaintingManager {
         return p;
     }
     public Painting createText(Point start) {
-        Painting p = new Text(start, "Hello" , id++);
+        Painting p = new Text(start , id++);
         paintings.add(p);
         return p;
     }

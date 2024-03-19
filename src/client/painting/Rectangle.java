@@ -1,8 +1,10 @@
 package client.painting;
 
+import client.MyFrame;
+
 import java.awt.*;
 
-public class Rectangle extends Painting{
+public  class Rectangle extends Painting{
 
     public Rectangle(Point start, Point end, int id) {
         this.startPoint = start;
@@ -34,7 +36,25 @@ public class Rectangle extends Painting{
     }
     @Override
     public void draw(Graphics g) {
-        g.drawRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
+        Graphics2D g2d = (Graphics2D) g;
+        Color originalColor = g2d.getColor();
+        Stroke originalStroke = g2d.getStroke();
+        if(fillColor != null){
+            g2d.setColor(fillColor);
+            g2d.fillRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
+        }
+        if(stroke != null){
+            g2d.setStroke(stroke);
+        }
+        if(color != null){
+            g2d.setColor(color);
+        }
+        if (isSelected()){
+            g2d.setColor(MyFrame.SELECTED_COLOR);
+        }
+        g2d.drawRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
+        g2d.setColor(originalColor);
+        g2d.setStroke(originalStroke);
     }
     @Override
     public boolean isClickResizeArea(Point p){

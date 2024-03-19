@@ -2,7 +2,7 @@ package client.painting;
 
 import client.MyFrame;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class Circle extends Painting{
     private int radius;
@@ -33,7 +33,26 @@ public class Circle extends Painting{
     }
     @Override
     public void draw(java.awt.Graphics g) {
-        g.drawOval(startPoint.x - radius, startPoint.y - radius, radius * 2, radius * 2);
+        Graphics2D g2d = (Graphics2D) g;
+        Color originalColor = g2d.getColor();
+        Stroke originalStroke = g2d.getStroke();
+
+        if(fillColor != null){
+            g2d.setColor(fillColor);
+            g2d.fillOval(startPoint.x - radius, startPoint.y - radius, radius * 2, radius * 2);
+        }
+        if(stroke != null){
+            g2d.setStroke(stroke);
+        }
+        if(color != null){
+            g2d.setColor(color);
+        }
+        if (isSelected()){
+            g2d.setColor(MyFrame.SELECTED_COLOR);
+        }
+        g2d.drawOval(startPoint.x - radius, startPoint.y - radius, radius * 2, radius * 2);
+        g2d.setColor(originalColor);
+        g2d.setStroke(originalStroke);
     }
     @Override
     public boolean isClickResizeArea(Point p){

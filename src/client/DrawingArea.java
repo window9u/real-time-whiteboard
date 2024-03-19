@@ -30,13 +30,7 @@ public class DrawingArea extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (Painting painting : paintingManager.getPaintings()) {
-            if (painting.isSelected()) {
-                g.setColor(Color.RED);
                 painting.draw(g);
-                g.setColor(Color.BLACK);
-            } else {
-                painting.draw(g);
-            }
         }
 
     }

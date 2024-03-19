@@ -5,9 +5,8 @@ import java.awt.*;
 public class Text extends Painting{
     private String text;
 
-    public Text(Point start, String text, int id) {
+    public Text(Point start, int id) {
         this.startPoint = start;
-        this.text = text;
         this.id = id;
     }
     @Override
