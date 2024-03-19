@@ -56,7 +56,8 @@ public class PaintingManager {
 
 
     public void unSelect(Painting focusedPainting) {
-        focusedPainting.unSelect();
+        if(focusedPainting != null)
+            focusedPainting.unSelect();
     }
     public void Select(Painting focusedPainting) {
         focusedPainting.select();

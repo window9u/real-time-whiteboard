@@ -7,7 +7,8 @@ import java.awt.*;
 
 public class MyFrame extends JFrame {
     private DrawingArea drawingArea;
-    private PaintingManager paintingManager;
+    private final PaintingManager paintingManager;
+    public final static int RESIZE_AREA = 10;
 
     public enum Action {
         DRAW_RECTANGLE, DRAW_CIRCLE, DRAW_TEXT, DRAW_LINE, NORMAL, FOCUS, MOVE, RESIZE
@@ -24,11 +25,11 @@ public class MyFrame extends JFrame {
 
     public void init() {
         //add top on the button component and center is the drawing area
-        addTop();
+        addButtonArea();
         getDrawingArea();
     }
 
-    public void addTop() {
+    public void addButtonArea() {
         JPanel top = new JPanel();
         JButton rectangle = new JButton("Rectangle");
         JButton circle = new JButton("Circle");

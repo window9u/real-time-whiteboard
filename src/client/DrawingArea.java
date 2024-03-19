@@ -1,4 +1,5 @@
 package client;
+
 import client.painting.Painting;
 import client.painting.PaintingManager;
 
@@ -24,24 +25,41 @@ public class DrawingArea extends JPanel {
         addMouseListener(eventHandler); // For mouse click, press, etc.
         addMouseMotionListener(eventHandler); // For mouse drag, move, etc.
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (Painting painting : paintingManager.getPaintings()) {
-            if(painting.isSelected()){
+            if (painting.isSelected()) {
                 g.setColor(Color.RED);
                 painting.draw(g);
                 g.setColor(Color.BLACK);
-            }else{
+            } else {
                 painting.draw(g);
             }
         }
 
     }
-    public void setAction (MyFrame.Action action) {
+
+    public void setAction(MyFrame.Action action) {
+        switch (action) {
+            case DRAW_RECTANGLE:
+            case DRAW_CIRCLE:
+            case DRAW_TEXT:
+            case DRAW_LINE:
+            case NORMAL:
+                if (focusedPainting != null) {
+                    paintingManager.unSelect(focusedPainting);
+                    focusedPainting = null;
+                }
+                break;
+            default:
+                break;
+        }
         this.selectedAction = action;
         System.out.println("Action Changed: " + action);
     }
+
     protected MouseAdapter getEventHandler() {
         return new MouseAdapter() {
             @Override
@@ -50,13 +68,13 @@ public class DrawingArea extends JPanel {
 
                 switch (selectedAction) {
                     case FOCUS://focus on the selected object
-                        if(focusedPainting.isClickResizeArea(previousPoint)){
+                        if (focusedPainting.isClickResizeArea(previousPoint)) {
                             setAction(MyFrame.Action.RESIZE);
-                        }else if(focusedPainting.isClickMoveArea(previousPoint)){
+                        } else if (focusedPainting.isClickMoveArea(previousPoint)) {
                             setAction(MyFrame.Action.MOVE);
-                        } else{
+                        } else {
                             paintingManager.unSelect(focusedPainting);
-                            focusedPainting=null;
+                            focusedPainting = null;
                             setAction(MyFrame.Action.NORMAL);
                         }
                         break;
@@ -65,7 +83,7 @@ public class DrawingArea extends JPanel {
                     case RESIZE://resize the selected object
                         break;
                     case DRAW_RECTANGLE:
-                        focusedPainting =paintingManager.createRectangle(previousPoint);
+                        focusedPainting = paintingManager.createRectangle(previousPoint);
                         setAction(MyFrame.Action.FOCUS);
                         paintingManager.Select(focusedPainting);
                         break;
@@ -80,7 +98,7 @@ public class DrawingArea extends JPanel {
                         break;
                     case NORMAL:
                         focusedPainting = paintingManager.clickPainting(previousPoint);
-                        if(focusedPainting!=null){
+                        if (focusedPainting != null) {
                             setAction(MyFrame.Action.FOCUS);
                             paintingManager.Select(focusedPainting);
                         }
@@ -90,9 +108,10 @@ public class DrawingArea extends JPanel {
                 }
                 repaint();
             }
+
             @Override
             public void mouseReleased(MouseEvent e) {
-                if(selectedAction== MyFrame.Action.MOVE || selectedAction== MyFrame.Action.RESIZE){
+                if (selectedAction == MyFrame.Action.MOVE || selectedAction == MyFrame.Action.RESIZE) {
                     setAction(MyFrame.Action.FOCUS);
                 }
                 repaint();
@@ -102,11 +121,10 @@ public class DrawingArea extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 Point currentPoint = e.getPoint();
 
-                if(selectedAction== MyFrame.Action.MOVE){
-                    paintingManager.movePainting(focusedPainting, currentPoint.x-previousPoint.x, currentPoint.y-previousPoint.y);
-                }
-                else if(selectedAction== MyFrame.Action.RESIZE){
-                    paintingManager.resizePainting(focusedPainting, currentPoint.x-previousPoint.x, currentPoint.y-previousPoint.y);
+                if (selectedAction == MyFrame.Action.MOVE) {
+                    paintingManager.movePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
+                } else if (selectedAction == MyFrame.Action.RESIZE) {
+                    paintingManager.resizePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
                 }
                 previousPoint = currentPoint;
                 repaint();
@@ -114,6 +132,7 @@ public class DrawingArea extends JPanel {
         };
 
     }
+
     public Painting getFocusedPainting() {
         return focusedPainting;
     }
