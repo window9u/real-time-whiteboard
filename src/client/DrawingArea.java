@@ -70,6 +70,9 @@ public class DrawingArea extends JPanel {
                         paintingManager.Select(focusedPainting);
                         break;
                     case DRAW_CIRCLE:
+                        focusedPainting = paintingManager.createCircle(previousPoint);
+                        setAction(MyFrame.Action.FOCUS);
+                        paintingManager.Select(focusedPainting);
                         break;
                     case DRAW_TEXT:
                         break;
@@ -94,6 +97,7 @@ public class DrawingArea extends JPanel {
                 }
                 repaint();
             }
+
             @Override
             public void mouseDragged(MouseEvent e) {
                 Point currentPoint = e.getPoint();
