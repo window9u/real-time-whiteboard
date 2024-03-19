@@ -27,7 +27,7 @@ public class PaintingManager {
         return p;
     }
     public Painting createLine(Point start) {
-        Point end = new Point(start.x, start.y + 100);
+        Point end = new Point(start.x+100, start.y );
         Painting p = new Line(start, end,id++);
         paintings.add(p);
         return p;

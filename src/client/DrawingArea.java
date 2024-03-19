@@ -73,8 +73,6 @@ public class DrawingArea extends JPanel {
                         } else if (focusedPainting.isClickMoveArea(previousPoint)) {
                             setAction(MyFrame.Action.MOVE);
                         } else {
-                            paintingManager.unSelect(focusedPainting);
-                            focusedPainting = null;
                             setAction(MyFrame.Action.NORMAL);
                         }
                         break;
@@ -95,6 +93,9 @@ public class DrawingArea extends JPanel {
                     case DRAW_TEXT:
                         break;
                     case DRAW_LINE:
+                        focusedPainting = paintingManager.createLine(previousPoint);
+                        setAction(MyFrame.Action.FOCUS);
+                        paintingManager.Select(focusedPainting);
                         break;
                     case NORMAL:
                         focusedPainting = paintingManager.clickPainting(previousPoint);
