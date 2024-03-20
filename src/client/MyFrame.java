@@ -49,7 +49,7 @@ public class MyFrame extends JFrame {
         colorComboBox.addActionListener(e -> {
             Color selectedColor = (Color) colorComboBox.getSelectedItem();
             // Assuming you have a method to set the color of the selected Painting object
-            if(drawingArea.getFocusedPainting() != null) {
+            if (drawingArea.getFocusedPainting() != null) {
                 paintingManager.setColor(drawingArea.getFocusedPainting(), selectedColor);
             }
         });
@@ -57,14 +57,14 @@ public class MyFrame extends JFrame {
         fillColorComboBox.addActionListener(e -> {
             Color selectedFillColor = (Color) fillColorComboBox.getSelectedItem();
             // Similarly, set the fill color of the selected Painting object
-            if(drawingArea.getFocusedPainting() != null)
+            if (drawingArea.getFocusedPainting() != null)
                 paintingManager.setFillColor(drawingArea.getFocusedPainting(), selectedFillColor);
         });
 
         lineWidthComboBox.addActionListener(e -> {
             Float selectedLineWidth = (Float) lineWidthComboBox.getSelectedItem();
             // Update the stroke of the selected Painting object
-            if(drawingArea.getFocusedPainting() != null)
+            if (drawingArea.getFocusedPainting() != null)
                 paintingManager.setStroke(drawingArea.getFocusedPainting(), new BasicStroke(selectedLineWidth));
         });
         top.add(colorComboBox);
@@ -80,18 +80,14 @@ public class MyFrame extends JFrame {
         JButton line = new JButton("Line");
         JButton delete = new JButton("Delete");
 
-        rectangle.addActionListener(e -> {
-            drawingArea.setAction(Action.DRAW_RECTANGLE);
-        });
-        circle.addActionListener(e -> {
-            drawingArea.setAction(Action.DRAW_CIRCLE);
-        });
-        text.addActionListener(e -> {
-            drawingArea.setAction(Action.DRAW_TEXT);
-        });
-        line.addActionListener(e -> {
-            drawingArea.setAction(Action.DRAW_LINE);
-        });
+        rectangle.addActionListener(e ->
+                drawingArea.setAction(Action.DRAW_RECTANGLE));
+        circle.addActionListener(e ->
+                drawingArea.setAction(Action.DRAW_CIRCLE));
+        text.addActionListener(e ->
+                drawingArea.setAction(Action.DRAW_TEXT)
+        );
+        line.addActionListener(e -> drawingArea.setAction(Action.DRAW_LINE));
 
         delete.addActionListener(e -> {
             if (drawingArea.getFocusedPainting() != null) {
