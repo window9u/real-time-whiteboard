@@ -21,8 +21,8 @@ public class PaintingManager {
         paintings.add(p);
         return p;
     }
-    public Painting createText(Point start) {
-        Painting p = new Text(start , id++);
+    public Painting createTextBox(Point start) {
+        Painting p = new TextBox(start , new Point(start.x+140,start.y+20),id++);
         paintings.add(p);
         return p;
     }
@@ -33,7 +33,7 @@ public class PaintingManager {
         return p;
     }
 
-    public void remove(int id) {
+    public void removePaint(int id) {
         for (Painting p : paintings) {
             if (p.getId() == id) {
                 paintings.remove(p);
@@ -81,4 +81,12 @@ public class PaintingManager {
     public void resizePainting(Painting focusedPainting, int i, int i1) {
         focusedPainting.resize(i, i1);
     }
+
+    public void addText(TextBox focusedPainting, String text) {
+        focusedPainting.addText(text);
+    }
+    public void removeText(TextBox focusedPainting) {
+        focusedPainting.removeText();
+    }
+
 }

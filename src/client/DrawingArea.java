@@ -2,6 +2,7 @@ package client;
 
 import client.painting.Painting;
 import client.painting.PaintingManager;
+import client.painting.TextBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,19 +12,20 @@ public class DrawingArea extends JPanel {
 
     private Point previousPoint = null;
 
-
     private Painting focusedPainting = null;
     private MyFrame.Action selectedAction = MyFrame.Action.NORMAL;
     private final PaintingManager paintingManager;
+    private boolean isWriting = false;
 
     public DrawingArea(PaintingManager pm) {
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(800, 800));
         this.paintingManager = pm;
-
-        MouseAdapter eventHandler = getEventHandler();
+        requestFocusInWindow();
+        MouseAdapter eventHandler = getMouseEventHandler();
         addMouseListener(eventHandler); // For mouse click, press, etc.
         addMouseMotionListener(eventHandler); // For mouse drag, move, etc.
+        addKeyListener(getKeyEventHandler());
     }
 
     @Override
@@ -44,6 +46,7 @@ public class DrawingArea extends JPanel {
             case NORMAL:
                 if (focusedPainting != null) {
                     paintingManager.unSelect(focusedPainting);
+                    isWriting = false;
                     focusedPainting = null;
                 }
                 break;
@@ -54,12 +57,12 @@ public class DrawingArea extends JPanel {
         System.out.println("Action Changed: " + action);
     }
 
-    protected MouseAdapter getEventHandler() {
+    protected MouseAdapter getMouseEventHandler() {
         return new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 previousPoint = e.getPoint();
-
+                requestFocusInWindow();
                 switch (selectedAction) {
                     case FOCUS://focus on the selected object
                         if (focusedPainting.isClickResizeArea(previousPoint)) {
@@ -85,6 +88,10 @@ public class DrawingArea extends JPanel {
                         paintingManager.Select(focusedPainting);
                         break;
                     case DRAW_TEXT:
+                        focusedPainting = paintingManager.createTextBox(previousPoint);
+                        setAction(MyFrame.Action.FOCUS);
+                        isWriting = true;
+                        paintingManager.Select(focusedPainting);
                         break;
                     case DRAW_LINE:
                         focusedPainting = paintingManager.createLine(previousPoint);
@@ -94,6 +101,9 @@ public class DrawingArea extends JPanel {
                     case NORMAL:
                         focusedPainting = paintingManager.clickPainting(previousPoint);
                         if (focusedPainting != null) {
+                            if(focusedPainting instanceof TextBox){
+                                isWriting = true;
+                            }
                             setAction(MyFrame.Action.FOCUS);
                             paintingManager.Select(focusedPainting);
                         }
@@ -127,7 +137,32 @@ public class DrawingArea extends JPanel {
         };
 
     }
+    protected KeyAdapter getKeyEventHandler() {
+        return new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (isWriting) {
+                    TextBox focusedTextBox = (TextBox) focusedPainting;
+                    if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE){
+                        return;
+                    }
+                    paintingManager.addText(focusedTextBox, String.valueOf(e.getKeyChar()));
+                    repaint();
+                }
+            }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (isWriting) {
+                    TextBox focusedTextBox = (TextBox) focusedPainting;
+                    if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                        paintingManager.removeText(focusedTextBox);
+                        repaint();
+                    }
+                }
+            }
+        };
+    }
     public Painting getFocusedPainting() {
         return focusedPainting;
     }

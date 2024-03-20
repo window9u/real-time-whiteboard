@@ -40,14 +40,17 @@ public class MyFrame extends JFrame {
     }
 
     private void registerComboBoxes(JPanel top) {
-        Color[] colors = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
+        String[] colors = {"BLACK", "RED", "GREEN", "BLUE", "YELLOW"};
         Float[] lineWidths = {1f, 2f, 3f, 4f, 5f};
-        JComboBox<Color> colorComboBox = new JComboBox<>(colors);
-        JComboBox<Color> fillColorComboBox = new JComboBox<>(colors);
+        JComboBox<String> colorComboBox = new JComboBox<>(colors);
+        JComboBox<String> fillColorComboBox = new JComboBox<>(colors);
         JComboBox<Float> lineWidthComboBox = new JComboBox<>(lineWidths);
 
         colorComboBox.addActionListener(e -> {
-            Color selectedColor = (Color) colorComboBox.getSelectedItem();
+            String selectedColorString = (String) colorComboBox.getSelectedItem();
+            if(selectedColorString == null)
+                return;
+            Color selectedColor=getColorByString(selectedColorString);
             // Assuming you have a method to set the color of the selected Painting object
             if (drawingArea.getFocusedPainting() != null) {
                 paintingManager.setColor(drawingArea.getFocusedPainting(), selectedColor);
@@ -55,14 +58,18 @@ public class MyFrame extends JFrame {
         });
 
         fillColorComboBox.addActionListener(e -> {
-            Color selectedFillColor = (Color) fillColorComboBox.getSelectedItem();
-            // Similarly, set the fill color of the selected Painting object
+            String selectedFillColorString = (String) fillColorComboBox.getSelectedItem();
+            if(selectedFillColorString == null)
+                return;
+            Color selectedFillColor=getColorByString(selectedFillColorString);
             if (drawingArea.getFocusedPainting() != null)
                 paintingManager.setFillColor(drawingArea.getFocusedPainting(), selectedFillColor);
         });
 
         lineWidthComboBox.addActionListener(e -> {
             Float selectedLineWidth = (Float) lineWidthComboBox.getSelectedItem();
+            if(selectedLineWidth == null)
+                return;
             // Update the stroke of the selected Painting object
             if (drawingArea.getFocusedPainting() != null)
                 paintingManager.setStroke(drawingArea.getFocusedPainting(), new BasicStroke(selectedLineWidth));
@@ -91,7 +98,7 @@ public class MyFrame extends JFrame {
 
         delete.addActionListener(e -> {
             if (drawingArea.getFocusedPainting() != null) {
-                paintingManager.remove(drawingArea.getFocusedPainting().getId());
+                paintingManager.removePaint(drawingArea.getFocusedPainting().getId());
                 drawingArea.setAction(Action.NORMAL);
                 drawingArea.repaint();
 
@@ -109,4 +116,21 @@ public class MyFrame extends JFrame {
         this.drawingArea = drawingArea;
         this.add(drawingArea, BorderLayout.CENTER);
     }
+    private Color getColorByString(String colorString){
+        switch (colorString) {
+            case "BLACK":
+                return Color.BLACK;
+            case "RED":
+                return Color.RED;
+            case "GREEN":
+                return Color.GREEN;
+            case "BLUE":
+                return Color.BLUE;
+            case "YELLOW":
+                return Color.YELLOW;
+            default:
+                return Color.BLACK;
+        }
+    }
+
 }
