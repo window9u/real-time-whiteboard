@@ -53,6 +53,17 @@ public class PaintingManager {
         }
         return null;
     }
+    public void setColor(Painting p, Color color) {
+        p.setColor(color);
+    }
+
+    public void setFillColor(Painting p, Color color) {
+        p.setFillColor(color);
+    }
+
+    public void setStroke(Painting p, Stroke stroke) {
+        p.setStroke(stroke);
+    }
 
 
     public void unSelect(Painting focusedPainting) {

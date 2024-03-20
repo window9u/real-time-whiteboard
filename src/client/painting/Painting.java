@@ -3,10 +3,26 @@ package client.painting;
 import java.awt.*;
 
 public class Painting {
-    public Point startPoint;
-    public Point endPoint;
-    public boolean isSelected;
+    protected Point startPoint;
+    protected Point endPoint;
+    private boolean isSelected;
     protected int id;
+    protected Color color=null;
+    protected Color fillColor=null;
+    protected Stroke stroke=null;
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setFillColor(Color fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
+    }
+
     public boolean contains(Point p){
         return false;
     }
