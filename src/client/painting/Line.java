@@ -39,7 +39,21 @@ public class Line extends Painting{
     }
     @Override
     public void draw(Graphics g) {
-        g.drawLine(start.x, start.y, end.x, end.y);
+        Graphics2D g2d = (Graphics2D) g;
+        Color originalColor = g2d.getColor();
+        Stroke originalStroke = g2d.getStroke();
+        if(stroke != null){
+            g2d.setStroke(stroke);
+        }
+        if(color != null){
+            g2d.setColor(color);
+        }
+        if (isSelected()){
+            g2d.setColor(MyFrame.SELECTED_COLOR);
+        }
+        g2d.drawLine(start.x, start.y, end.x, end.y);
+        g2d.setColor(originalColor);
+        g2d.setStroke(originalStroke);
     }
     @Override
     public boolean isClickResizeArea(Point p){
