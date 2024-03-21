@@ -4,15 +4,14 @@ import client.frame.MyFrame;
 
 import java.awt.*;
 
-public class Line extends Painting{
+public class Line extends Painting {
     private boolean startSelected = false;
     private boolean endSelected = false;
 
 
-    public Line(Point start, Point end, int id) {
+    public Line(Point start, Point end) {
         this.startPoint = start;
         this.endPoint = end;
-        this.id = id;
     }
     @Override
     public boolean contains(Point p) {

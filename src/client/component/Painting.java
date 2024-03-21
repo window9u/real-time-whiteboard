@@ -2,7 +2,7 @@ package client.component;
 
 import java.awt.*;
 
-public class Painting {
+public class Painting implements java.io.Serializable{
     protected Point startPoint;
     protected Point endPoint;
     private boolean isSelected;
@@ -42,6 +42,9 @@ public class Painting {
     }//will be overridden by the subclasses
     public int getId(){
         return this.id;
+    }
+    public void setId(int id){
+        this.id=id;
     }
     public boolean isClickResizeArea(Point p){//will be overridden by the subclasses
         return false;

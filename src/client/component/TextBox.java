@@ -2,11 +2,11 @@ package client.component;
 
 import java.awt.*;
 
-public class TextBox extends Rectangle{
+public class TextBox extends Rectangle {
     private String text = "";
 
-    public TextBox(Point start,Point end, int id) {
-        super(start, end, id);
+    public TextBox(Point start,Point end) {
+        super(start, end);
     }
     public void addText(String text){
         this.text += text;
