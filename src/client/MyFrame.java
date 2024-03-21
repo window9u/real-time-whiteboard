@@ -11,9 +11,6 @@ public class MyFrame extends JFrame {
     private final static int  FRAME_HEIGHT = 1000;
     private FrameManager frameManager;
 
-    public enum Action {
-        DRAW_RECTANGLE, DRAW_CIRCLE, DRAW_TEXT, DRAW_LINE, NORMAL, FOCUS, MOVE, RESIZE
-    }
 
     public MyFrame(PaintingManager pm) {
         this.paintingManager = pm;

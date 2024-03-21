@@ -8,16 +8,20 @@ import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 public class FrameManager {
-    private MyFrame.Action selectedAction = MyFrame.Action.NORMAL;
+    private Action selectedAction = Action.NORMAL;
     private boolean isWriting = false;
     private Painting focusedPainting = null;
     private Point previousPoint = null;
     private final PaintingManager pm;
+    private enum Action {
+        DRAW_RECTANGLE, DRAW_CIRCLE, DRAW_TEXT, DRAW_LINE, NORMAL, FOCUS, MOVE, RESIZE
+    }
+
     public FrameManager(PaintingManager paintingManager) {
         this.pm = paintingManager;
     }
 
-    private void setAction(MyFrame.Action action) {
+    private void setAction(Action action) {
         switch (action) {
             case DRAW_RECTANGLE:
             case DRAW_CIRCLE:
@@ -42,32 +46,32 @@ public class FrameManager {
         switch (selectedAction) {
             case FOCUS://focus on the selected object
                 if (focusedPainting.isClickResizeArea(previousPoint)) {
-                    setAction(MyFrame.Action.RESIZE);
+                    setAction(Action.RESIZE);
                 } else if (focusedPainting.isClickMoveArea(previousPoint)) {
-                    setAction(MyFrame.Action.MOVE);
+                    setAction(Action.MOVE);
                 } else {
-                    setAction(MyFrame.Action.NORMAL);
+                    setAction(Action.NORMAL);
                 }
                 break;
             case DRAW_RECTANGLE:
                 focusedPainting = pm.createRectangle(previousPoint);
-                setAction(MyFrame.Action.FOCUS);
+                setAction(Action.FOCUS);
                 pm.Select(focusedPainting);
                 break;
             case DRAW_CIRCLE:
                 focusedPainting = pm.createCircle(previousPoint);
-                setAction(MyFrame.Action.FOCUS);
+                setAction(Action.FOCUS);
                 pm.Select(focusedPainting);
                 break;
             case DRAW_TEXT:
                 focusedPainting = pm.createTextBox(previousPoint);
-                setAction(MyFrame.Action.FOCUS);
+                setAction(Action.FOCUS);
                 isWriting = true;
                 pm.Select(focusedPainting);
                 break;
             case DRAW_LINE:
                 focusedPainting = pm.createLine(previousPoint);
-                setAction(MyFrame.Action.FOCUS);
+                setAction(Action.FOCUS);
                 pm.Select(focusedPainting);
                 break;
             case NORMAL:
@@ -76,7 +80,7 @@ public class FrameManager {
                     if(focusedPainting instanceof TextBox){
                         isWriting = true;
                     }
-                    setAction(MyFrame.Action.FOCUS);
+                    setAction(Action.FOCUS);
                     pm.Select(focusedPainting);
                 }
                 break;
@@ -85,14 +89,14 @@ public class FrameManager {
         }
     }
     public void mouseReleaseDrawArea() {
-        if (selectedAction == MyFrame.Action.MOVE || selectedAction == MyFrame.Action.RESIZE) {
-            setAction(MyFrame.Action.FOCUS);
+        if (selectedAction == Action.MOVE || selectedAction == Action.RESIZE) {
+            setAction(Action.FOCUS);
         }
     }
     public void mouseDraggedDrawArea(Point currentPoint) {
-        if (selectedAction == MyFrame.Action.MOVE) {
+        if (selectedAction == Action.MOVE) {
             pm.movePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
-        } else if (selectedAction == MyFrame.Action.RESIZE) {
+        } else if (selectedAction == Action.RESIZE) {
             pm.resizePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
         }
         previousPoint = currentPoint;
@@ -119,21 +123,21 @@ public class FrameManager {
     }
     // The following methods are called from MenuArea
     public void rectangleButtonPressed() {
-        setAction(MyFrame.Action.DRAW_RECTANGLE);
+        setAction(Action.DRAW_RECTANGLE);
     }
     public void circleButtonPressed() {
-        setAction(MyFrame.Action.DRAW_CIRCLE);
+        setAction(Action.DRAW_CIRCLE);
     }
     public void textButtonPressed() {
-        setAction(MyFrame.Action.DRAW_TEXT);
+        setAction(Action.DRAW_TEXT);
     }
     public void lineButtonPressed() {
-        setAction(MyFrame.Action.DRAW_LINE);
+        setAction(Action.DRAW_LINE);
     }
     public void deleteButtonPressed() {
         if (focusedPainting != null) {
             pm.removePaint(focusedPainting.getId());
-            this.setAction(MyFrame.Action.NORMAL);
+            this.setAction(Action.NORMAL);
         }
     }
 
