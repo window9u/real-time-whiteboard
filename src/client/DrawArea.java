@@ -1,7 +1,6 @@
 package client;
 
 import client.painting.Painting;
-import client.painting.TextBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +27,7 @@ public class DrawArea extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (Painting painting : fm.getPaintings()) {
-                painting.draw(g);
+            painting.draw(g);
         }
     }
 
@@ -41,11 +40,13 @@ public class DrawArea extends JPanel {
                 requestFocusInWindow();
                 repaint();
             }
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 fm.mouseReleaseDrawArea();
                 repaint();
             }
+
             @Override
             public void mouseDragged(MouseEvent e) {
                 fm.mouseDraggedDrawArea(e.getPoint());
@@ -54,6 +55,7 @@ public class DrawArea extends JPanel {
         };
 
     }
+
     protected KeyAdapter getKeyEventHandler() {
         return new KeyAdapter() {
             @Override
@@ -61,6 +63,7 @@ public class DrawArea extends JPanel {
                 fm.keyTyped(e);
                 repaint();
             }
+
             @Override
             public void keyPressed(KeyEvent e) {
                 fm.keyPressed(e);

@@ -13,6 +13,7 @@ public class FrameManager {
     private Painting focusedPainting = null;
     private Point previousPoint = null;
     private final PaintingManager pm;
+
     private enum Action {
         DRAW_RECTANGLE, DRAW_CIRCLE, DRAW_TEXT, DRAW_LINE, NORMAL, FOCUS, MOVE, RESIZE
     }
@@ -40,6 +41,7 @@ public class FrameManager {
         this.selectedAction = action;
         System.out.println("Action Changed: " + action);
     }
+
     // The following methods are called from DrawArea
     public void mousePressDrawingArea(Point p) {
         previousPoint = p;
@@ -77,7 +79,7 @@ public class FrameManager {
             case NORMAL:
                 focusedPainting = pm.clickPainting(previousPoint);
                 if (focusedPainting != null) {
-                    if(focusedPainting instanceof TextBox){
+                    if (focusedPainting instanceof TextBox) {
                         isWriting = true;
                     }
                     setAction(Action.FOCUS);
@@ -88,11 +90,13 @@ public class FrameManager {
                 break;
         }
     }
+
     public void mouseReleaseDrawArea() {
         if (selectedAction == Action.MOVE || selectedAction == Action.RESIZE) {
             setAction(Action.FOCUS);
         }
     }
+
     public void mouseDraggedDrawArea(Point currentPoint) {
         if (selectedAction == Action.MOVE) {
             pm.movePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
@@ -101,19 +105,22 @@ public class FrameManager {
         }
         previousPoint = currentPoint;
     }
-    public Vector<Painting> getPaintings(){
+
+    public Vector<Painting> getPaintings() {
         return pm.getPaintings();
     }
+
     public void keyTyped(KeyEvent e) {
         if (isWriting) {
             TextBox focusedTextBox = (TextBox) focusedPainting;
-            if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE){
+            if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
                 return;
             }
             pm.addText(focusedTextBox, String.valueOf(e.getKeyChar()));
         }
     }
-    public void keyPressed(KeyEvent e){
+
+    public void keyPressed(KeyEvent e) {
         if (isWriting) {
             TextBox focusedTextBox = (TextBox) focusedPainting;
             if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -121,19 +128,24 @@ public class FrameManager {
             }
         }
     }
+
     // The following methods are called from MenuArea
     public void rectangleButtonPressed() {
         setAction(Action.DRAW_RECTANGLE);
     }
+
     public void circleButtonPressed() {
         setAction(Action.DRAW_CIRCLE);
     }
+
     public void textButtonPressed() {
         setAction(Action.DRAW_TEXT);
     }
+
     public void lineButtonPressed() {
         setAction(Action.DRAW_LINE);
     }
+
     public void deleteButtonPressed() {
         if (focusedPainting != null) {
             pm.removePaint(focusedPainting.getId());
@@ -150,6 +162,7 @@ public class FrameManager {
             pm.setColor(focusedPainting, selectedColor);
         }
     }
+
     public void fillColorComboBoxSelected(String selectedFillColorString) {
         if (selectedFillColorString == null)
             return;
@@ -159,6 +172,7 @@ public class FrameManager {
             pm.setFillColor(focusedPainting, selectedFillColor);
         }
     }
+
     public void lineWidthComboBoxSelected(Float selectedLineWidth) {
         if (selectedLineWidth == null)
             return;
@@ -167,6 +181,7 @@ public class FrameManager {
             pm.setStroke(focusedPainting, new BasicStroke(selectedLineWidth));
         }
     }
+
     private Color getColorByString(String colorString) {
         switch (colorString) {
             case "RED":
