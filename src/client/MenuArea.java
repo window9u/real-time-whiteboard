@@ -4,14 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MenuArea extends JPanel {
-    private final DrawingArea drawingArea;
-    private final PaintingManager paintingManager;
-    public MenuArea(DrawingArea drawingArea, PaintingManager paintingManager) {
-        this.drawingArea = drawingArea;
-        this.paintingManager = paintingManager;
+    private final FrameManager fm;
+
+    public MenuArea(FrameManager frameManager) {
+        this.fm = frameManager;
         registerButtons();
         registerComboBoxes();
     }
+
     private void registerButtons() {
         JButton rectangle = new JButton("Rectangle");
         JButton circle = new JButton("Circle");
@@ -20,21 +20,16 @@ public class MenuArea extends JPanel {
         JButton delete = new JButton("Delete");
 
         rectangle.addActionListener(e ->
-                drawingArea.setAction(MyFrame.Action.DRAW_RECTANGLE));
+                fm.rectangleButtonPressed());
         circle.addActionListener(e ->
-                drawingArea.setAction(MyFrame.Action.DRAW_CIRCLE));
+                fm.circleButtonPressed());
         text.addActionListener(e ->
-                drawingArea.setAction(MyFrame.Action.DRAW_TEXT)
-        );
-        line.addActionListener(e -> drawingArea.setAction(MyFrame.Action.DRAW_LINE));
-
+                fm.textButtonPressed());
+        line.addActionListener(e ->
+                fm.lineButtonPressed());
         delete.addActionListener(e -> {
-            if (drawingArea.getFocusedPainting() != null) {
-                paintingManager.removePaint(drawingArea.getFocusedPainting().getId());
-                drawingArea.setAction(MyFrame.Action.NORMAL);
-                drawingArea.repaint();
-
-            }
+            fm.deleteButtonPressed();
+            repaint();
         });
         this.add(rectangle);
         this.add(circle);
@@ -42,6 +37,8 @@ public class MenuArea extends JPanel {
         this.add(line);
         this.add(delete);
     }
+
+
     private void registerComboBoxes() {
         String[] colors = {"BLACK", "RED", "GREEN", "BLUE", "YELLOW"};
         Float[] lineWidths = {1f, 2f, 3f, 4f, 5f};
@@ -51,52 +48,19 @@ public class MenuArea extends JPanel {
 
         colorComboBox.addActionListener(e -> {
             String selectedColorString = (String) colorComboBox.getSelectedItem();
-            if(selectedColorString == null)
-                return;
-            Color selectedColor=getColorByString(selectedColorString);
-            // Assuming you have a method to set the color of the selected Painting object
-            if (drawingArea.getFocusedPainting() != null) {
-                paintingManager.setColor(drawingArea.getFocusedPainting(), selectedColor);
-            }
+            fm.colorComboBoxSelected(selectedColorString);
         });
 
         fillColorComboBox.addActionListener(e -> {
             String selectedFillColorString = (String) fillColorComboBox.getSelectedItem();
-            if(selectedFillColorString == null)
-                return;
-            Color selectedFillColor=getColorByString(selectedFillColorString);
-            if (drawingArea.getFocusedPainting() != null)
-                paintingManager.setFillColor(drawingArea.getFocusedPainting(), selectedFillColor);
+            fm.fillColorComboBoxSelected(selectedFillColorString);
         });
-
         lineWidthComboBox.addActionListener(e -> {
             Float selectedLineWidth = (Float) lineWidthComboBox.getSelectedItem();
-            if(selectedLineWidth == null)
-                return;
-            // Update the stroke of the selected Painting object
-            if (drawingArea.getFocusedPainting() != null)
-                paintingManager.setStroke(drawingArea.getFocusedPainting(), new BasicStroke(selectedLineWidth));
+            fm.lineWidthComboBoxSelected(selectedLineWidth);
         });
         this.add(colorComboBox);
         this.add(fillColorComboBox);
         this.add(lineWidthComboBox);
-
     }
-    private Color getColorByString(String colorString){
-        switch (colorString) {
-            case "RED":
-                return Color.RED;
-            case "GREEN":
-                return Color.GREEN;
-            case "BLUE":
-                return Color.BLUE;
-            case "YELLOW":
-                return Color.YELLOW;
-            default:
-                return Color.BLACK;
-        }
-    }
-
-
-
 }
