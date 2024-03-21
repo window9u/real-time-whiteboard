@@ -1,14 +1,12 @@
 package client;
 
-import client.painting.PaintingManager;
+import client.frame.MyFrame;
 
-import javax.swing.*;
 
 public class Main {
 
      public static void main(String[] args) {
-         PaintingManager pm = new PaintingManager();
+         PaintingManager pm = new PaintingManager(null);
          new MyFrame(pm);
-
     }
 }

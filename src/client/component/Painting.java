@@ -1,4 +1,4 @@
-package client.painting;
+package client.component;
 
 import java.awt.*;
 

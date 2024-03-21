@@ -1,40 +1,38 @@
-package client.painting;
+package client.component;
 
-import client.MyFrame;
+import client.frame.MyFrame;
 
 import java.awt.*;
 
 public class Line extends Painting{
-    private Point start;
-    private Point end;
     private boolean startSelected = false;
     private boolean endSelected = false;
 
 
     public Line(Point start, Point end, int id) {
-        this.start = start;
-        this.end = end;
+        this.startPoint = start;
+        this.endPoint = end;
         this.id = id;
     }
     @Override
     public boolean contains(Point p) {
         //check if the point is on the line
-        double d1 = start.distance(p) + p.distance(end);
-        double d2 = start.distance(end);
+        double d1 = startPoint.distance(p) + p.distance(endPoint);
+        double d2 = startPoint.distance(endPoint);
         return Math.abs(d1-d2) < 0.1;
     }
 
     @Override
     public void move(int dx, int dy) {
-        this.start.translate(dx, dy);
-        this.end.translate(dx, dy);
+        this.startPoint.translate(dx, dy);
+        this.endPoint.translate(dx, dy);
     }
     @Override
     public void resize(int dx, int dy){
         if(startSelected){
-            start.translate(dx, dy);
+            startPoint.translate(dx, dy);
         }else if(endSelected) {
-            end.translate(dx, dy);
+            endPoint.translate(dx, dy);
         }
     }
     @Override
@@ -51,16 +49,16 @@ public class Line extends Painting{
         if (isSelected()){
             g2d.setColor(MyFrame.SELECTED_COLOR);
         }
-        g2d.drawLine(start.x, start.y, end.x, end.y);
+        g2d.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         g2d.setColor(originalColor);
         g2d.setStroke(originalStroke);
     }
     @Override
     public boolean isClickResizeArea(Point p){
-        if(start.distance(p) < MyFrame.RESIZE_AREA){
+        if(startPoint.distance(p) < MyFrame.RESIZE_AREA){
             startSelected = true;
             return true;
-        }else if (end.distance(p) < MyFrame.RESIZE_AREA){
+        }else if (endPoint.distance(p) < MyFrame.RESIZE_AREA){
             endSelected = true;
             return true;
         }else {
