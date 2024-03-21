@@ -1,4 +1,6 @@
-package client;
+package client.frame;
+
+import client.PaintingManager;
 
 import javax.swing.*;
 import java.awt.*;

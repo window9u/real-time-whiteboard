@@ -1,7 +1,7 @@
 package client;
 
-import client.painting.*;
-import client.painting.Rectangle;
+import client.component.*;
+import client.component.Rectangle;
 
 import java.awt.*;
 import java.util.Vector;

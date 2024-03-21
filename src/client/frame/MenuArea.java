@@ -1,7 +1,6 @@
-package client;
+package client.frame;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MenuArea extends JPanel {
     private final FrameManager fm;

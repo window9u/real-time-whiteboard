@@ -1,7 +1,8 @@
-package client;
+package client.frame;
 
-import client.painting.Painting;
-import client.painting.TextBox;
+import client.PaintingManager;
+import client.component.Painting;
+import client.component.TextBox;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
