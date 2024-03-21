@@ -11,7 +11,6 @@ import java.util.Vector;
 
 public class PaintingManager {
     private final HashMap<Integer, Painting> paintings;
-    private int id = 0;
     private OutputNetworkManager out;
 
     public PaintingManager() {
@@ -25,10 +24,9 @@ public class PaintingManager {
 
     public Painting createRectangle(Point start) {
         Point end = new Point(start.x + 100, start.y + 100);
-        Painting p = new Rectangle(start, end, id++);
+        Painting p = new Rectangle(start, end);
         try {
             out.createObject(p);
-            paintings.put(p.getId(), p);
             return p;
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +35,7 @@ public class PaintingManager {
     }
 
     public Painting createCircle(Point start) {
-        Painting p = new Circle(start, 50, id++);
+        Painting p = new Circle(start, 50);
         try {
             out.createObject(p);
             paintings.put(p.getId(), p);
@@ -49,10 +47,9 @@ public class PaintingManager {
     }
 
     public Painting createTextBox(Point start) {
-        Painting p = new TextBox(start, new Point(start.x + 140, start.y + 20), id++);
+        Painting p = new TextBox(start, new Point(start.x + 140, start.y + 20));
         try {
             out.createObject(p);
-            paintings.put(p.getId(), p);
             return p;
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,10 +59,9 @@ public class PaintingManager {
 
     public Painting createLine(Point start) {
         Point end = new Point(start.x + 100, start.y);
-        Painting p = new Line(start, end, id++);
+        Painting p = new Line(start, end);
         try {
             out.createObject(p);
-            paintings.put(p.getId(), p);
             return p;
         } catch (IOException e) {
             e.printStackTrace();

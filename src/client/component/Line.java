@@ -9,10 +9,9 @@ public class Line extends Painting {
     private boolean endSelected = false;
 
 
-    public Line(Point start, Point end, int id) {
+    public Line(Point start, Point end) {
         this.startPoint = start;
         this.endPoint = end;
-        this.id = id;
     }
     @Override
     public boolean contains(Point p) {

@@ -43,6 +43,9 @@ public class Painting implements java.io.Serializable{
     public int getId(){
         return this.id;
     }
+    public void setId(int id){
+        this.id=id;
+    }
     public boolean isClickResizeArea(Point p){//will be overridden by the subclasses
         return false;
     }

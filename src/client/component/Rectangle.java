@@ -6,10 +6,9 @@ import java.awt.*;
 
 public  class Rectangle extends Painting {
 
-    public Rectangle(Point start, Point end, int id) {
+    public Rectangle(Point start, Point end) {
         this.startPoint = start;
         this.endPoint = end;
-        this.id = id;
     }
     @Override
     public boolean contains(Point p) {

@@ -7,10 +7,9 @@ import java.awt.*;
 public class Circle extends Painting {
     private int radius;
 
-    public Circle(Point center, int radius, int id) {
+    public Circle(Point center, int radius) {
         this.startPoint = center;
         this.radius = radius;
-        this.id = id;
     }
 
     @Override

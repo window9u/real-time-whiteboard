@@ -6,7 +6,6 @@ import client.network.OutputNetworkManager;
 import message.*;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -20,9 +19,8 @@ public class Main {
         ObjectOutputStream out=null;
         InputNetworkManager inputNetworkManager;
         OutputNetworkManager outputNetworkManager;
-        try(ServerSocket server = new ServerSocket(PORT)){
+        try(Socket conn = new Socket("127.0.0.1",PORT)){
             System.out.println("Server started");
-            Socket conn = server.accept();
             in=new ObjectInputStream(conn.getInputStream());
             out=new ObjectOutputStream(conn.getOutputStream());
         }catch (IOException e){
