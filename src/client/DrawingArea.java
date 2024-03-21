@@ -1,7 +1,6 @@
 package client;
 
 import client.painting.Painting;
-import client.painting.PaintingManager;
 import client.painting.TextBox;
 
 import javax.swing.*;

@@ -1,7 +1,5 @@
 package client;
 
-import client.painting.PaintingManager;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,7 +15,6 @@ public class MyFrame extends JFrame {
 
     public MyFrame(PaintingManager pm) {
         this.paintingManager = pm;
-
         this.setSize(1000, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         init();
@@ -26,111 +23,20 @@ public class MyFrame extends JFrame {
 
     public void init() {
         //add top on the button component and center is the drawing area
-        addMenuArea();
         getDrawingArea();
+        addMenuArea();
     }
 
     public void addMenuArea() {
-        JPanel top = new JPanel();
-        registerButtons(top);
-        registerComboBoxes(top);
         // Add color, fill color, and line width combo boxes
         // Optionally, for better user experience, set renderers to display the colors and line widths visually
-        this.add(top, BorderLayout.NORTH);
-    }
-
-    private void registerComboBoxes(JPanel top) {
-        String[] colors = {"BLACK", "RED", "GREEN", "BLUE", "YELLOW"};
-        Float[] lineWidths = {1f, 2f, 3f, 4f, 5f};
-        JComboBox<String> colorComboBox = new JComboBox<>(colors);
-        JComboBox<String> fillColorComboBox = new JComboBox<>(colors);
-        JComboBox<Float> lineWidthComboBox = new JComboBox<>(lineWidths);
-
-        colorComboBox.addActionListener(e -> {
-            String selectedColorString = (String) colorComboBox.getSelectedItem();
-            if(selectedColorString == null)
-                return;
-            Color selectedColor=getColorByString(selectedColorString);
-            // Assuming you have a method to set the color of the selected Painting object
-            if (drawingArea.getFocusedPainting() != null) {
-                paintingManager.setColor(drawingArea.getFocusedPainting(), selectedColor);
-            }
-        });
-
-        fillColorComboBox.addActionListener(e -> {
-            String selectedFillColorString = (String) fillColorComboBox.getSelectedItem();
-            if(selectedFillColorString == null)
-                return;
-            Color selectedFillColor=getColorByString(selectedFillColorString);
-            if (drawingArea.getFocusedPainting() != null)
-                paintingManager.setFillColor(drawingArea.getFocusedPainting(), selectedFillColor);
-        });
-
-        lineWidthComboBox.addActionListener(e -> {
-            Float selectedLineWidth = (Float) lineWidthComboBox.getSelectedItem();
-            if(selectedLineWidth == null)
-                return;
-            // Update the stroke of the selected Painting object
-            if (drawingArea.getFocusedPainting() != null)
-                paintingManager.setStroke(drawingArea.getFocusedPainting(), new BasicStroke(selectedLineWidth));
-        });
-        top.add(colorComboBox);
-        top.add(fillColorComboBox);
-        top.add(lineWidthComboBox);
-
-    }
-
-    private void registerButtons(JPanel top) {
-        JButton rectangle = new JButton("Rectangle");
-        JButton circle = new JButton("Circle");
-        JButton text = new JButton("Text");
-        JButton line = new JButton("Line");
-        JButton delete = new JButton("Delete");
-
-        rectangle.addActionListener(e ->
-                drawingArea.setAction(Action.DRAW_RECTANGLE));
-        circle.addActionListener(e ->
-                drawingArea.setAction(Action.DRAW_CIRCLE));
-        text.addActionListener(e ->
-                drawingArea.setAction(Action.DRAW_TEXT)
-        );
-        line.addActionListener(e -> drawingArea.setAction(Action.DRAW_LINE));
-
-        delete.addActionListener(e -> {
-            if (drawingArea.getFocusedPainting() != null) {
-                paintingManager.removePaint(drawingArea.getFocusedPainting().getId());
-                drawingArea.setAction(Action.NORMAL);
-                drawingArea.repaint();
-
-            }
-        });
-        top.add(rectangle);
-        top.add(circle);
-        top.add(text);
-        top.add(line);
-        top.add(delete);
+        this.add(new MenuArea(this.drawingArea,this.paintingManager), BorderLayout.NORTH);
     }
 
     private void getDrawingArea() {
         DrawingArea drawingArea = new DrawingArea(this.paintingManager);
         this.drawingArea = drawingArea;
         this.add(drawingArea, BorderLayout.CENTER);
-    }
-    private Color getColorByString(String colorString){
-        switch (colorString) {
-            case "BLACK":
-                return Color.BLACK;
-            case "RED":
-                return Color.RED;
-            case "GREEN":
-                return Color.GREEN;
-            case "BLUE":
-                return Color.BLUE;
-            case "YELLOW":
-                return Color.YELLOW;
-            default:
-                return Color.BLACK;
-        }
     }
 
 }
