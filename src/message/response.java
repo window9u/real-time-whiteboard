@@ -1,8 +1,8 @@
 package message;
 
-public class selectResult implements Message{
+public class response implements Message{
     private final boolean result;
-    public selectResult(boolean result){
+    public response(boolean result){
         this.result = result;
     }
     public boolean getResult(){

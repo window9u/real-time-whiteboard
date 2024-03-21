@@ -1,11 +1,15 @@
 package client;
 
 import client.frame.MyFrame;
+import client.network.InputNetworkManager;
+import client.network.OutputNetworkManager;
 import message.*;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 
 public class Main {
@@ -14,7 +18,8 @@ public class Main {
         int PORT = 9999;
         ObjectInputStream in = null;
         ObjectOutputStream out=null;
-        NetworkManager nm;
+        InputNetworkManager inputNetworkManager;
+        OutputNetworkManager outputNetworkManager;
         try(ServerSocket server = new ServerSocket(PORT)){
             System.out.println("Server started");
             Socket conn = server.accept();
@@ -23,25 +28,32 @@ public class Main {
         }catch (IOException e){
             e.printStackTrace();
         }
-        PaintingManager pm = new PaintingManager(null);
+        PaintingManager pm = new PaintingManager();
         new MyFrame(pm);
         if(in==null || out==null){
             return;
         }
-        nm= new NetworkManager(out,pm);
+        BlockingQueue<Boolean> responseQueue = new ArrayBlockingQueue<>(1);
+        inputNetworkManager= new InputNetworkManager(pm, responseQueue);
+        outputNetworkManager= new OutputNetworkManager(out, responseQueue);
+        pm.setOutputNetworkManager(outputNetworkManager);
         //keep reading messages from the server
         while(true){
             try {
                 Message message = (Message) in.readObject();
                 if( message instanceof createObject){
-                    nm.createObject(((createObject) message).getObject());
+                    inputNetworkManager.createObject(((createObject) message).getObject());
                 } else if( message instanceof removeObject){
-                    nm.removeObject(((removeObject) message).getId());
+                    inputNetworkManager.removeObject(((removeObject) message).getId());
                 } else if( message instanceof updateObject){
-                    nm.updateObject(((updateObject) message).getObject());
+                    inputNetworkManager.updateObject(((updateObject) message).getObject());
                 } else if (message instanceof selectObject){
-                    nm.selectObject(((selectObject) message).getId());
-                } else{
+                    inputNetworkManager.selectObject(((selectObject) message).getId());
+                } else if(message instanceof unselectObject){
+                    inputNetworkManager.unselectObject(((unselectObject) message).getId());
+                } else if(message instanceof response){
+                    inputNetworkManager.sendResponse(((response) message).getResult());
+                }else{
                     System.out.println("Unknown message type");
                     break;
                 }
