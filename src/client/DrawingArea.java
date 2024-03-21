@@ -8,7 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class DrawingArea extends JPanel {
-
+    private static final int DRAWING_AREA_WIDTH = 800;
+    private static final int DRAWING_AREA_HEIGHT = 800;
     private Point previousPoint = null;
 
     private Painting focusedPainting = null;
@@ -18,13 +19,13 @@ public class DrawingArea extends JPanel {
 
     public DrawingArea(PaintingManager pm) {
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(DRAWING_AREA_WIDTH, DRAWING_AREA_HEIGHT));
         this.paintingManager = pm;
         requestFocusInWindow();
         MouseAdapter eventHandler = getMouseEventHandler();
         addMouseListener(eventHandler); // For mouse click, press, etc.
         addMouseMotionListener(eventHandler); // For mouse drag, move, etc.
-        addKeyListener(getKeyEventHandler());
+        addKeyListener(getKeyEventHandler()); // For keyboard input
     }
 
     @Override
@@ -33,7 +34,6 @@ public class DrawingArea extends JPanel {
         for (Painting painting : paintingManager.getPaintings()) {
                 painting.draw(g);
         }
-
     }
 
     public void setAction(MyFrame.Action action) {
@@ -71,10 +71,6 @@ public class DrawingArea extends JPanel {
                         } else {
                             setAction(MyFrame.Action.NORMAL);
                         }
-                        break;
-                    case MOVE://move the selected object
-                        break;
-                    case RESIZE://resize the selected object
                         break;
                     case DRAW_RECTANGLE:
                         focusedPainting = paintingManager.createRectangle(previousPoint);

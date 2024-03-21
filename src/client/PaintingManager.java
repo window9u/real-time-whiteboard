@@ -1,4 +1,7 @@
-package client.painting;
+package client;
+
+import client.painting.*;
+import client.painting.Rectangle;
 
 import java.awt.*;
 import java.util.Vector;
@@ -6,13 +9,19 @@ import java.util.Vector;
 public class PaintingManager {
     private final Vector<Painting> paintings;
     private int id = 0;
-    public PaintingManager() {
-        paintings = new Vector<Painting>();
+    public PaintingManager(Vector<Painting> paintings) {
+        //if server sends paintings, use them
+        if(paintings != null)
+            this.paintings = paintings;
+        else
+            this.paintings = new Vector<>();
     }
-
     public Painting createRectangle(Point start) {
         Point end = new Point(start.x + 100, start.y + 100);
         Painting p = new Rectangle(start, end,id++);
+        //send to server
+        //if server accepts, add to paintings
+        //server will send back the id
         paintings.add(p);
         return p;
     }
@@ -36,6 +45,7 @@ public class PaintingManager {
     public void removePaint(int id) {
         for (Painting p : paintings) {
             if (p.getId() == id) {
+                //send to server
                 paintings.remove(p);
                 break;
             }
