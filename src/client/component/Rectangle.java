@@ -4,7 +4,7 @@ import client.frame.MyFrame;
 
 import java.awt.*;
 
-public  class Rectangle extends Painting{
+public  class Rectangle extends Painting {
 
     public Rectangle(Point start, Point end, int id) {
         this.startPoint = start;

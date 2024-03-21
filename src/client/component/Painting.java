@@ -2,7 +2,7 @@ package client.component;
 
 import java.awt.*;
 
-public class Painting {
+public class Painting implements java.io.Serializable{
     protected Point startPoint;
     protected Point endPoint;
     private boolean isSelected;

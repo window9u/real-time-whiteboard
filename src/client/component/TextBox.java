@@ -2,7 +2,7 @@ package client.component;
 
 import java.awt.*;
 
-public class TextBox extends Rectangle{
+public class TextBox extends Rectangle {
     private String text = "";
 
     public TextBox(Point start,Point end, int id) {

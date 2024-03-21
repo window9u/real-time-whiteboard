@@ -4,7 +4,7 @@ import client.frame.MyFrame;
 
 import java.awt.*;
 
-public class Line extends Painting{
+public class Line extends Painting {
     private boolean startSelected = false;
     private boolean endSelected = false;
 
