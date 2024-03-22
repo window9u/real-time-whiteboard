@@ -2,10 +2,9 @@ package message;
 
 import client.component.Painting;
 
-public class createObject implements Message {
-
+public class update implements Request, Response {
     private final Painting object;
-    public createObject(Painting object){
+    public update(Painting object){
         this.object = object;
     }
     public Painting getObject(){
