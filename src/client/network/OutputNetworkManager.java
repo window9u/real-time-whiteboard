@@ -1,7 +1,7 @@
 package client.network;
 
 import client.component.Painting;
-import message.*;
+import type.request.*;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -13,6 +13,7 @@ public class OutputNetworkManager {
     private final BlockingQueue<Boolean> removeResponse;
     private final BlockingQueue<Boolean> selectResponse;
     private final BlockingQueue<Boolean> unselectResponse;
+    private int CONNECTION_ID;
 
     public OutputNetworkManager(ObjectOutputStream out, BlockingQueue<Painting> createResponse,
                                 BlockingQueue<Boolean> removeResponse, BlockingQueue<Boolean> selectResponse,
@@ -23,22 +24,37 @@ public class OutputNetworkManager {
         this.selectResponse = selectResponse;
         this.unselectResponse = unselectResponse;
     }
-    public Painting createObject(Painting object) throws IOException, InterruptedException {
-        out.writeObject(new create(object));
+    public void init(int CONNECTION_ID){
+        this.CONNECTION_ID = CONNECTION_ID;
+    }
+    public Painting create(Painting object) throws IOException, InterruptedException {
+        create req=new create(object);
+        req.setCONNECTION_ID(CONNECTION_ID);
+        out.writeObject(req);
         return createResponse.take();
     }
-    public void removeObject(int id) throws IOException, InterruptedException {
-        out.writeObject(new remove(id));
+    public void remove(int id) throws IOException, InterruptedException {
+        remove req=new remove(id);
+        req.setCONNECTION_ID(CONNECTION_ID);
+        out.writeObject(req);
         removeResponse.take();
     }
-    public void updateObject(Painting object) throws IOException{
-        out.writeObject(new update(object));
+    public void update(Painting object) throws IOException{
+        update req=new update(object);
+        req.setCONNECTION_ID(CONNECTION_ID);
+        out.writeObject(req);
     }
-    public boolean selectObject(int id) throws IOException, InterruptedException {
-        out.writeObject(new select(id));
+    public boolean select(int id) throws IOException, InterruptedException {
+        select req=new select(id);
+        req.setCONNECTION_ID(CONNECTION_ID);
+        out.writeObject(req);
         return selectResponse.take();
     }
-    public void unselectObject(int id) throws IOException{
-        out.writeObject(new unselect(id));
+    public void unselect(int id) throws IOException, InterruptedException{
+        unselect req=new unselect(id);
+        req.setCONNECTION_ID(CONNECTION_ID);
+        out.writeObject(req);
+        unselectResponse.take();
     }
+
 }

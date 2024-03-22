@@ -27,7 +27,7 @@ public class PaintingManager {
         Point end = new Point(start.x + 100, start.y + 100);
         Painting p = new Rectangle(start, end);
         try {
-            return out.createObject(p);
+            return out.create(p);
         } catch (IOException | InterruptedException e ) {
             e.printStackTrace();
             return null;
@@ -38,7 +38,7 @@ public class PaintingManager {
         //pessimistic approach
         Painting p = new Circle(start, 50);
         try {
-            return out.createObject(p);
+            return out.create(p);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -49,7 +49,7 @@ public class PaintingManager {
         //pessimistic approach
         Painting p = new TextBox(start, new Point(start.x + 140, start.y + 20));
         try {
-            return out.createObject(p);
+            return out.create(p);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -61,7 +61,7 @@ public class PaintingManager {
         Point end = new Point(start.x + 100, start.y);
         Painting p = new Line(start, end);
         try {
-            return out.createObject(p);
+            return out.create(p);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -71,7 +71,7 @@ public class PaintingManager {
     public void removePaint(int id) {
         //pessimistic approach
         try {
-            out.removeObject(id);
+            out.remove(id);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -86,7 +86,7 @@ public class PaintingManager {
         for (Painting painting : paintings.values()) {
             if (!painting.isSelected() && painting.contains(p)) {
                 try {
-                    if (out.selectObject(painting.getId())) {
+                    if (out.select(painting.getId())) {
                         return painting;
                     }
                 } catch (IOException | InterruptedException e) {
@@ -100,8 +100,8 @@ public class PaintingManager {
     public void unSelect(Painting focusedPainting) {
         //pessimistic approach
         try {
-            out.unselectObject(focusedPainting.getId());
-        } catch (IOException e) {
+            out.unselect(focusedPainting.getId());
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -111,7 +111,7 @@ public class PaintingManager {
         //optimistic approach
         p.setColor(color);
         try {
-            out.updateObject(p);
+            out.update(p);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public class PaintingManager {
         //optimistic approach
         p.setFillColor(color);
         try {
-            out.updateObject(p);
+            out.update(p);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,7 +131,7 @@ public class PaintingManager {
         //optimistic approach
         p.setStroke(stroke);
         try {
-            out.updateObject(p);
+            out.update(p);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,7 +143,7 @@ public class PaintingManager {
     public void movePainting(Painting focusedPainting, int dx, int dy) {
         focusedPainting.move(dx, dy);
         try {
-            out.updateObject(focusedPainting);
+            out.update(focusedPainting);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,7 +152,7 @@ public class PaintingManager {
     public void resizePainting(Painting focusedPainting, int dx, int dy) {
         focusedPainting.resize(dx, dy);
         try {
-            out.updateObject(focusedPainting);
+            out.update(focusedPainting);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,7 +161,7 @@ public class PaintingManager {
     public void addText(TextBox focusedPainting, String text) {
         focusedPainting.addText(text);
         try {
-            out.updateObject(focusedPainting);
+            out.update(focusedPainting);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,7 +170,7 @@ public class PaintingManager {
     public void removeText(TextBox focusedPainting) {
         focusedPainting.removeText();
         try {
-            out.updateObject(focusedPainting);
+            out.update(focusedPainting);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,16 +1,16 @@
 package Server;
 
 
-import message.Message;
+import type.request.Request;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.concurrent.BlockingQueue;
 
 public class Connection implements Runnable {
-    private final BlockingQueue<Message> requestQueue;
+    private final BlockingQueue<Request> requestQueue;
     private final ObjectInputStream in;
-    public Connection(ObjectInputStream in, BlockingQueue<Message> requestQueue) {
+    public Connection(ObjectInputStream in, BlockingQueue<Request> requestQueue) {
         this.requestQueue = requestQueue;
         this.in = in;
     }
@@ -18,7 +18,7 @@ public class Connection implements Runnable {
     public void run() {
         while (true) {
             try {
-                Message m= (Message) in.readObject();
+                Request m= (Request) in.readObject();
                 requestQueue.put(m);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
