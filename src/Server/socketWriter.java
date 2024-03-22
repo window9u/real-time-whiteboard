@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 public class socketWriter {
@@ -9,8 +10,8 @@ public class socketWriter {
         this.out = out;
         this.CONNECTION_ID = CONNECTION_ID;
     }
-    public void write(type.response.Response response){
-        write(response);
+    public void write(type.response.Response response) throws IOException {
+        out.writeObject(response);
     }
     public int getCONNECTION_ID(){
         return CONNECTION_ID;
