@@ -188,6 +188,6 @@ public class PaintingManager {
         paintings.get(id).select();
     }
     public void serverUnselectObject(int id){
-        paintings.get(id).unSelect();
+        paintings.get(id).unselect();
     }
 }

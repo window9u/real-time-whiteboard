@@ -30,7 +30,7 @@ public class Painting implements java.io.Serializable{
     public void select(){
         this.isSelected=true;
     }
-    public void unSelect(){
+    public void unselect(){
         this.isSelected=false;
     }
     public boolean isSelected(){
