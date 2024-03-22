@@ -1,14 +1,14 @@
-package message;
+package type.request;
 
-public class select implements Request, Response {
-    private final int id;
+public class unselect extends Request {
+    private final int paintingId;
     private boolean owner;
     private boolean success;
-    public select(int id){
-        this.id = id;
+    public unselect(int paintingId){
+        this.paintingId = paintingId;
     }
-    public int getId(){
-        return id;
+    public int getPaintingId(){
+        return paintingId;
     }
     public void setOwner(boolean owner){
         this.owner = owner;

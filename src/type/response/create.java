@@ -1,13 +1,16 @@
-package message;
+package type.response;
 
 import client.component.Painting;
 
-public class update implements Request, Response {
+public class create extends Response {
+
     private final Painting object;
-    public update(Painting object){
+
+    public create(Painting object){
         this.object = object;
     }
     public Painting getObject(){
         return object;
     }
+
 }
