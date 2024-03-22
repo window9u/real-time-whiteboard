@@ -4,7 +4,7 @@ import client.component.Painting;
 import client.frame.MyFrame;
 import client.network.InputNetworkManager;
 import client.network.OutputNetworkManager;
-import message.*;
+import type.response.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -44,13 +44,13 @@ public class Main {
             try {
                 Response response = (Response) in.readObject();
                 if( response instanceof create){
-                    inputNetworkManager.createObject(((create) response));
+                    inputNetworkManager.create(((create) response));
                 } else if( response instanceof remove){
-                    inputNetworkManager.removeObject((remove) response);
+                    inputNetworkManager.remove((remove) response);
                 } else if( response instanceof update){
-                    inputNetworkManager.updateObject((update) response);
+                    inputNetworkManager.update((update) response);
                 } else if (response instanceof select){
-                    inputNetworkManager.selectObject((select) response);
+                    inputNetworkManager.select((select) response);
                 } else if(response instanceof unselect){
                     inputNetworkManager.unselectObject((unselect) response);
                 } else{
