@@ -5,7 +5,7 @@ import java.awt.*;
 public class Painting implements java.io.Serializable{
     protected Point startPoint;
     protected Point endPoint;
-    private boolean isSelected;
+    private boolean isSelected=true;
     protected int id;
     protected Color color=null;
     protected Color fillColor=null;

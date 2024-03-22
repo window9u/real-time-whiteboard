@@ -1,5 +1,6 @@
 package client;
 
+import client.component.Painting;
 import client.frame.MyFrame;
 import client.network.InputNetworkManager;
 import client.network.OutputNetworkManager;
@@ -31,27 +32,28 @@ public class Main {
         if(in==null || out==null){
             return;
         }
-        BlockingQueue<Boolean> responseQueue = new ArrayBlockingQueue<>(1);
-        inputNetworkManager= new InputNetworkManager(pm, responseQueue);
-        outputNetworkManager= new OutputNetworkManager(out, responseQueue);
+        BlockingQueue<Painting> createResponse = new ArrayBlockingQueue<>(1);
+        BlockingQueue<Boolean> removeResponse = new ArrayBlockingQueue<>(1);
+        BlockingQueue<Boolean> selectResponse = new ArrayBlockingQueue<>(1);
+        BlockingQueue<Boolean> unselectResponse = new ArrayBlockingQueue<>(1);
+        inputNetworkManager= new InputNetworkManager(pm, createResponse, removeResponse, selectResponse, unselectResponse);
+        outputNetworkManager= new OutputNetworkManager(out, createResponse, removeResponse, selectResponse, unselectResponse);
         pm.setOutputNetworkManager(outputNetworkManager);
         //keep reading messages from the server
         while(true){
             try {
-                Message message = (Message) in.readObject();
-                if( message instanceof createObject){
-                    inputNetworkManager.createObject(((createObject) message).getObject());
-                } else if( message instanceof removeObject){
-                    inputNetworkManager.removeObject(((removeObject) message).getId());
-                } else if( message instanceof updateObject){
-                    inputNetworkManager.updateObject(((updateObject) message).getObject());
-                } else if (message instanceof selectObject){
-                    inputNetworkManager.selectObject(((selectObject) message).getId());
-                } else if(message instanceof unselectObject){
-                    inputNetworkManager.unselectObject(((unselectObject) message).getId());
-                } else if(message instanceof response){
-                    inputNetworkManager.sendResponse(((response) message).getResult());
-                }else{
+                Response response = (Response) in.readObject();
+                if( response instanceof create){
+                    inputNetworkManager.createObject(((create) response));
+                } else if( response instanceof remove){
+                    inputNetworkManager.removeObject((remove) response);
+                } else if( response instanceof update){
+                    inputNetworkManager.updateObject((update) response);
+                } else if (response instanceof select){
+                    inputNetworkManager.selectObject((select) response);
+                } else if(response instanceof unselect){
+                    inputNetworkManager.unselectObject((unselect) response);
+                } else{
                     System.out.println("Unknown message type");
                     break;
                 }

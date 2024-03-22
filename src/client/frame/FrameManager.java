@@ -59,33 +59,29 @@ public class FrameManager {
             case DRAW_RECTANGLE:
                 focusedPainting = pm.createRectangle(previousPoint);
                 setAction(Action.FOCUS);
-                pm.Select(focusedPainting);
                 break;
             case DRAW_CIRCLE:
                 focusedPainting = pm.createCircle(previousPoint);
                 setAction(Action.FOCUS);
-                pm.Select(focusedPainting);
                 break;
             case DRAW_TEXT:
                 focusedPainting = pm.createTextBox(previousPoint);
                 setAction(Action.FOCUS);
                 isWriting = true;
-                pm.Select(focusedPainting);
                 break;
             case DRAW_LINE:
                 focusedPainting = pm.createLine(previousPoint);
                 setAction(Action.FOCUS);
-                pm.Select(focusedPainting);
                 break;
             case NORMAL:
                 focusedPainting = pm.clickPainting(previousPoint);
-                if (focusedPainting != null) {
-                    if (focusedPainting instanceof TextBox) {
-                        isWriting = true;
-                    }
-                    setAction(Action.FOCUS);
-                    pm.Select(focusedPainting);
-                }
+//                if (focusedPainting != null) {
+//                    if (focusedPainting instanceof TextBox) {
+//                        isWriting = true;
+//                    }
+//                    setAction(Action.FOCUS);
+//                    pm.Select(focusedPainting);
+//                }
                 break;
             default:
                 break;
