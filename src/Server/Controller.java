@@ -11,10 +11,11 @@ import java.util.concurrent.BlockingQueue;
 
 public class Controller implements Runnable {
 
-    private final BlockingQueue<Message> requestQueue;
-    private final List<ObjectOutputStream> outlist;
+    private final BlockingQueue<Request> requestQueue;
+    private final List<socketWriter> outlist;
     private final HashMap<Integer, Painting> paintings;
     private static int OBJECT_ID = 0;
+    private static int CONNECTION_ID = 0;
 
     public Controller(List<ObjectOutputStream> outlist, BlockingQueue<Message> messageQueue) {
         this.outlist = outlist;
@@ -39,38 +40,27 @@ public class Controller implements Runnable {
             }
         }
     }
-
-    private Message processRequest(Message request) {
-        if (request instanceof message.createObject) {
-            //createObject
-            Painting painting = ((message.createObject) request).getObject();
-            painting.setId(generateId());
-            paintings.put(painting.getId(), painting);
-            return new message.createObject(painting);
-        } else if (request instanceof message.removeObject) {
-            //removeObject
-            int id = ((message.removeObject) request).getId();
-            paintings.remove(id);
-            return new message.removeObject(id);
-        } else if (request instanceof message.updateObject) {
-            //updateObject
-            Painting painting = ((message.updateObject) request).getObject();
-            paintings.put(painting.getId(), painting);
-            return new message.updateObject(painting);
-        } else if (request instanceof message.selectObject) {
-            //selectObject
-            int id = ((message.selectObject) request).getId();
-            if (paintings.get(id).isSelected()) {
-                return new message.response(false);
-            } else{
-                paintings.get(id).select();
-                return new message.selectObject(id);
+    public void initConnection(ObjectOutputStream out){
+        try{
+            out.writeObject(new type.response.init(CONNECTION_ID));
+            for (Painting painting : paintings.values()) {
+                out.writeObject(new type.response.create(painting));
             }
-        } else if (request instanceof message.unselectObject) {
-            return new message.unselectObject(((message.unselectObject) request).getId());
-            //unselectObject
-        } else {
-            return new message.response(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        outlist.add(new socketWriter(out,CONNECTION_ID++));
+    }
+    private void processCreate(create req) {
+        Painting painting = req.getObject();
+        painting.setId(generateId());
+        paintings.put(painting.getId(), painting);
+        for (socketWriter out : outlist) {
+            type.response.create res=new type.response.create(painting);
+            if(out.getCONNECTION_ID() == req.getCONNECTION_ID()) {
+                res.setStatus("ok");
+            }
+            out.write(res);
         }
     }
 

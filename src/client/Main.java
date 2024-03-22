@@ -52,7 +52,9 @@ public class Main {
                 } else if (response instanceof select){
                     inputNetworkManager.select((select) response);
                 } else if(response instanceof unselect){
-                    inputNetworkManager.unselectObject((unselect) response);
+                    inputNetworkManager.unselect((unselect) response);
+                } else if(response instanceof  init){
+                    outputNetworkManager.init(((init) response).getCONNECTION_ID());
                 } else{
                     System.out.println("Unknown message type");
                     break;

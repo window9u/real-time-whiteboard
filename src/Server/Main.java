@@ -23,9 +23,9 @@ public class Main {
             while(true){
                 try(Socket connection = serverSocket.accept()) {
                     System.out.println("사용자접속: "+connection);
-                    outList.add(new ObjectOutputStream(connection.getOutputStream()));
+                    controller.initConnection(new ObjectOutputStream(connection.getOutputStream()));
                     ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                    new Thread(new Connection(in,messageQueue));
+                    new Thread(new Connection(in, requestQueue)).start();
                 }catch (IOException e) {
                     e.printStackTrace();
                     break;
