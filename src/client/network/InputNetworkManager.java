@@ -13,42 +13,46 @@ import java.util.concurrent.BlockingQueue;
 public class InputNetworkManager {
     private final PaintingManager pm;
     private final BlockingQueue<Painting> paintingQueue;
-    private final BlockingQueue<Boolean> removeResponse;
-    private final BlockingQueue<Boolean> selectResponse;
+    private final BlockingQueue<Boolean> removeQueue;
+    private final BlockingQueue<Boolean> selectQueue;
 
-    private final BlockingQueue<Boolean> unselectResponse;
+    private final BlockingQueue<Boolean> unselectQueue;
 
     public InputNetworkManager(PaintingManager pm, BlockingQueue<Painting> paintingQueue,
-                               BlockingQueue<Boolean> removeResponse, BlockingQueue<Boolean> selectResponse,
-                               BlockingQueue<Boolean> unselectResponse) {
+                               BlockingQueue<Boolean> removeQueue, BlockingQueue<Boolean> selectQueue,
+                               BlockingQueue<Boolean> unselectQueue) {
         this.pm = pm;
         this.paintingQueue = paintingQueue;
-        this.removeResponse = removeResponse;
-        this.selectResponse = selectResponse;
-        this.unselectResponse = unselectResponse;
+        this.removeQueue = removeQueue;
+        this.selectQueue = selectQueue;
+        this.unselectQueue = unselectQueue;
     }
     public void create(create response) {
-        if(response.getStatus())//if the object is created by my request
+        if(response.isReply())//if the object is created by my request
             paintingQueue.add(response.getObject());
         else
             pm.serverCreateObject(response.getObject());
     }
     public void remove(remove response) {
-        if(response.getStatus())//if the object is removed by my request
-            removeResponse.add(true);
+        if(response.isReply())//if the object is removed by my request
+            removeQueue.add(true);
         pm.serverRemoveObject(response.getId());
     }
     public void update(update response) {
         pm.serverUpdateObject(response.getObject());
     }
     public void select(select response) {
-        if(response.getStatus())//if the object is selected by my request
-            selectResponse.add(response.getStatus());
+        if(response.isReply())//if the object is selected by my request
+            selectQueue.add(response.isReply());
+        else if(response.isError())//if the object is selected by other user
+            System.out.println(response.getErrorMessage());
         pm.serverSelectObject(response.getId());
     }
     public void unselect(unselect response) {
-        if(response.getStatus())//if the object is unselected by my request
-            unselectResponse.add(response.getStatus());
+        if(response.isReply())//if the object is unselected by my request
+            unselectQueue.add(response.isReply());
+        else if(response.isError())//if the object is already selected by other user
+            System.out.println(response.getErrorMessage());
         pm.serverUnselectObject(response.getId());
     }
 
