@@ -2,11 +2,11 @@ package client.network;
 
 import client.PaintingManager;
 import client.component.Painting;
-import message.create;
-import message.remove;
-import message.update;
-import message.select;
-import message.unselect;
+import type.response.create;
+import type.response.remove;
+import type.response.update;
+import type.response.select;
+import type.response.unselect;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -27,28 +27,28 @@ public class InputNetworkManager {
         this.selectResponse = selectResponse;
         this.unselectResponse = unselectResponse;
     }
-    public void createObject(create response) {
-        if(response.getOwner())//if the object is created by my request
+    public void create(create response) {
+        if(response.getStatus())//if the object is created by my request
             paintingQueue.add(response.getObject());
         else
             pm.serverCreateObject(response.getObject());
     }
-    public void removeObject(remove response) {
-        if(response.getOwner())//if the object is removed by my request
+    public void remove(remove response) {
+        if(response.getStatus())//if the object is removed by my request
             removeResponse.add(true);
         pm.serverRemoveObject(response.getId());
     }
-    public void updateObject(update response) {
+    public void update(update response) {
         pm.serverUpdateObject(response.getObject());
     }
-    public void selectObject(select response) {
-        if(response.getOwner())//if the object is selected by my request
-            selectResponse.add(response.getSuccess());
+    public void select(select response) {
+        if(response.getStatus())//if the object is selected by my request
+            selectResponse.add(response.getStatus());
         pm.serverSelectObject(response.getId());
     }
-    public void unselectObject(unselect response) {
-        if(response.getOwner())//if the object is unselected by my request
-            unselectResponse.add(response.getSuccess());
+    public void unselect(unselect response) {
+        if(response.getStatus())//if the object is unselected by my request
+            unselectResponse.add(response.getStatus());
         pm.serverUnselectObject(response.getId());
     }
 
