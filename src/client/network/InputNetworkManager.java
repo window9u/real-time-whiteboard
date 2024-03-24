@@ -31,29 +31,29 @@ public class InputNetworkManager {
         if(response.isReply())//if the object is created by my request
             paintingQueue.add(response.getObject());
         else
-            pm.serverCreateObject(response.getObject());
+            pm.createObjectResponse(response.getObject());
     }
     public void remove(remove response) {
         if(response.isReply())//if the object is removed by my request
             removeQueue.add(true);
-        pm.serverRemoveObject(response.getId());
+        pm.removeResponse(response.getId());
     }
     public void update(update response) {
-        pm.serverUpdateObject(response.getObject());
+        pm.updateResponse(response.getObject());
     }
     public void select(select response) {
         if(response.isReply())//if the object is selected by my request
             selectQueue.add(response.isReply());
         else if(response.isError())//if the object is selected by other user
             System.out.println(response.getErrorMessage());
-        pm.serverSelectObject(response.getId());
+        pm.selectResponse(response.getId());
     }
     public void unselect(unselect response) {
         if(response.isReply())//if the object is unselected by my request
             unselectQueue.add(response.isReply());
         else if(response.isError())//if the object is already selected by other user
             System.out.println(response.getErrorMessage());
-        pm.serverUnselectObject(response.getId());
+        pm.unselectResponse(response.getId());
     }
 
 }

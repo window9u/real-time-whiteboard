@@ -31,7 +31,7 @@ public class FrameManager {
             case DRAW_LINE:
             case NORMAL:
                 if (focusedPainting != null) {
-                    pm.unSelect(focusedPainting);
+                    pm.unSelectRequest(focusedPainting);
                     isWriting = false;
                     focusedPainting = null;
                 }
@@ -57,20 +57,20 @@ public class FrameManager {
                 }
                 break;
             case DRAW_RECTANGLE:
-                focusedPainting = pm.createRectangle(previousPoint);
+                focusedPainting = pm.createRectangleRequest(previousPoint);
                 setAction(Action.FOCUS);
                 break;
             case DRAW_CIRCLE:
-                focusedPainting = pm.createCircle(previousPoint);
+                focusedPainting = pm.createCircleRequest(previousPoint);
                 setAction(Action.FOCUS);
                 break;
             case DRAW_TEXT:
-                focusedPainting = pm.createTextBox(previousPoint);
+                focusedPainting = pm.createTextBoxRequest(previousPoint);
                 setAction(Action.FOCUS);
                 isWriting = true;
                 break;
             case DRAW_LINE:
-                focusedPainting = pm.createLine(previousPoint);
+                focusedPainting = pm.createLineRequest(previousPoint);
                 setAction(Action.FOCUS);
                 break;
             case NORMAL:
@@ -86,6 +86,7 @@ public class FrameManager {
             default:
                 break;
         }
+        pm.repaint();
     }
 
     public void mouseReleaseDrawArea() {
@@ -96,9 +97,9 @@ public class FrameManager {
 
     public void mouseDraggedDrawArea(Point currentPoint) {
         if (selectedAction == Action.MOVE) {
-            pm.movePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
+            pm.moveRequest(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
         } else if (selectedAction == Action.RESIZE) {
-            pm.resizePainting(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
+            pm.resizeRequest(focusedPainting, currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
         }
         previousPoint = currentPoint;
     }
@@ -113,7 +114,7 @@ public class FrameManager {
             if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
                 return;
             }
-            pm.addText(focusedTextBox, String.valueOf(e.getKeyChar()));
+            pm.addTextRequest(focusedTextBox, String.valueOf(e.getKeyChar()));
         }
     }
 
@@ -121,7 +122,7 @@ public class FrameManager {
         if (isWriting) {
             TextBox focusedTextBox = (TextBox) focusedPainting;
             if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                pm.removeText(focusedTextBox);
+                pm.removeTextRequest(focusedTextBox);
             }
         }
     }
@@ -145,7 +146,7 @@ public class FrameManager {
 
     public void deleteButtonPressed() {
         if (focusedPainting != null) {
-            pm.removePaint(focusedPainting.getId());
+            pm.RemoveRequest(focusedPainting.getId());
             this.setAction(Action.NORMAL);
         }
     }
@@ -156,7 +157,7 @@ public class FrameManager {
         Color selectedColor = getColorByString(selectedColorString);
         // Assuming you have a method to set the color of the selected Painting object
         if (focusedPainting != null) {
-            pm.setColor(focusedPainting, selectedColor);
+            pm.setColorRequest(focusedPainting, selectedColor);
         }
     }
 
@@ -166,7 +167,7 @@ public class FrameManager {
         Color selectedFillColor = getColorByString(selectedFillColorString);
         // Assuming you have a method to set the fill color of the selected Painting object
         if (focusedPainting != null) {
-            pm.setFillColor(focusedPainting, selectedFillColor);
+            pm.setFillColorRequest(focusedPainting, selectedFillColor);
         }
     }
 
@@ -175,7 +176,7 @@ public class FrameManager {
             return;
         // Update the stroke of the selected Painting object
         if (focusedPainting != null) {
-            pm.setStroke(focusedPainting, new BasicStroke(selectedLineWidth));
+            pm.setStrokeRequest(focusedPainting, new BasicStroke(selectedLineWidth));
         }
     }
 
