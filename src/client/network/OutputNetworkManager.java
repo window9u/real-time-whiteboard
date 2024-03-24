@@ -12,17 +12,14 @@ public class OutputNetworkManager {
     private final BlockingQueue<Painting> createResponse;
     private final BlockingQueue<Boolean> removeResponse;
     private final BlockingQueue<Boolean> selectResponse;
-    private final BlockingQueue<Boolean> unselectResponse;
     private int CONNECTION_ID;
 
     public OutputNetworkManager(ObjectOutputStream out, BlockingQueue<Painting> createResponse,
-                                BlockingQueue<Boolean> removeResponse, BlockingQueue<Boolean> selectResponse,
-                                BlockingQueue<Boolean> unselectResponse) {
+                                BlockingQueue<Boolean> removeResponse, BlockingQueue<Boolean> selectResponse) {
         this.out = out;
         this.createResponse = createResponse;
         this.removeResponse = removeResponse;
         this.selectResponse = selectResponse;
-        this.unselectResponse = unselectResponse;
     }
     public void init(int CONNECTION_ID){
         this.CONNECTION_ID = CONNECTION_ID;
@@ -30,7 +27,9 @@ public class OutputNetworkManager {
     public Painting create(Painting object) throws IOException, InterruptedException {
         create req=new create(object);
         req.setCONNECTION_ID(CONNECTION_ID);
+        //send to server
         out.writeObject(req);
+        //wait for response
         return createResponse.take();
     }
     public void remove(int id) throws IOException, InterruptedException {
@@ -54,7 +53,6 @@ public class OutputNetworkManager {
         unselect req=new unselect(id);
         req.setCONNECTION_ID(CONNECTION_ID);
         out.writeObject(req);
-        unselectResponse.take();
     }
 
 }

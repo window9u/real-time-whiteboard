@@ -99,7 +99,7 @@ public class PaintingManager {
         return new Vector<>(this.paintings.values());
     }
 
-    public Painting clickPainting(Point p) {
+    public Painting trySelectPainting(Point p) {
         //pessimistic approach
         for (Painting painting : paintings.values()) {
             if (!painting.isSelected() && painting.contains(p)) {

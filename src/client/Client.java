@@ -33,14 +33,12 @@ public class Client {
         BlockingQueue<Painting> createResponse = new ArrayBlockingQueue<>(1);
         BlockingQueue<Boolean> removeResponse = new ArrayBlockingQueue<>(1);
         BlockingQueue<Boolean> selectResponse = new ArrayBlockingQueue<>(1);
-        BlockingQueue<Boolean> unselectResponse = new ArrayBlockingQueue<>(1);
-        inputNetworkManager = new InputNetworkManager(pm, createResponse, removeResponse, selectResponse, unselectResponse);
-        outputNetworkManager = new OutputNetworkManager(out, createResponse, removeResponse, selectResponse, unselectResponse);
+        inputNetworkManager = new InputNetworkManager(pm, createResponse, removeResponse, selectResponse);
+        outputNetworkManager = new OutputNetworkManager(out, createResponse, removeResponse, selectResponse);
         pm.setOutputNetworkManager(outputNetworkManager);
     }
     private void runClient(){
         while (true) {
-            System.out.println("get response");
             try {
                 Response response = (Response) in.readObject();
                 System.out.println(response);

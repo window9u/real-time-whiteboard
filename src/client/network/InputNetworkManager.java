@@ -16,16 +16,13 @@ public class InputNetworkManager {
     private final BlockingQueue<Boolean> removeQueue;
     private final BlockingQueue<Boolean> selectQueue;
 
-    private final BlockingQueue<Boolean> unselectQueue;
 
     public InputNetworkManager(PaintingManager pm, BlockingQueue<Painting> paintingQueue,
-                               BlockingQueue<Boolean> removeQueue, BlockingQueue<Boolean> selectQueue,
-                               BlockingQueue<Boolean> unselectQueue) {
+                               BlockingQueue<Boolean> removeQueue, BlockingQueue<Boolean> selectQueue) {
         this.pm = pm;
         this.paintingQueue = paintingQueue;
         this.removeQueue = removeQueue;
         this.selectQueue = selectQueue;
-        this.unselectQueue = unselectQueue;
     }
     public void create(create response) {
         if(response.isReply())//if the object is created by my request
@@ -49,10 +46,6 @@ public class InputNetworkManager {
         pm.selectResponse(response.getId());
     }
     public void unselect(unselect response) {
-        if(response.isReply())//if the object is unselected by my request
-            unselectQueue.add(response.isReply());
-        else if(response.isError())//if the object is already selected by other user
-            System.out.println(response.getErrorMessage());
         pm.unselectResponse(response.getId());
     }
 

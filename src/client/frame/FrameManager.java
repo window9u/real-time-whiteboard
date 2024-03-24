@@ -53,6 +53,7 @@ public class FrameManager {
                 } else if (focusedPainting.isClickMoveArea(previousPoint)) {
                     setAction(Action.MOVE);
                 } else {
+                    pm.unSelectRequest(focusedPainting);
                     setAction(Action.NORMAL);
                 }
                 break;
@@ -74,14 +75,13 @@ public class FrameManager {
                 setAction(Action.FOCUS);
                 break;
             case NORMAL:
-                focusedPainting = pm.clickPainting(previousPoint);
-//                if (focusedPainting != null) {
-//                    if (focusedPainting instanceof TextBox) {
-//                        isWriting = true;
-//                    }
-//                    setAction(Action.FOCUS);
-//                    pm.Select(focusedPainting);
-//                }
+                focusedPainting = pm.trySelectPainting(previousPoint);
+                if (focusedPainting != null) {
+                    if (focusedPainting instanceof TextBox) {
+                        isWriting = true;
+                    }
+                    setAction(Action.FOCUS);
+                }
                 break;
             default:
                 break;
