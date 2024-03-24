@@ -26,10 +26,8 @@ public class MenuArea extends JPanel {
                 fm.textButtonPressed());
         line.addActionListener(e ->
                 fm.lineButtonPressed());
-        delete.addActionListener(e -> {
-            fm.deleteButtonPressed();
-            repaint();
-        });
+        delete.addActionListener(e ->
+            fm.deleteButtonPressed());
         this.add(rectangle);
         this.add(circle);
         this.add(text);

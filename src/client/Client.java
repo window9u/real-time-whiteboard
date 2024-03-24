@@ -1,24 +1,21 @@
 package client;
 
-import client.component.Painting;
 import client.frame.MyFrame;
-import client.network.InputNetworkManager;
-import client.network.OutputNetworkManager;
+import client.network.RequestManager;
+import client.network.ResponseManager;
 import type.response.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class Client {
-    InputNetworkManager inputNetworkManager;
-    OutputNetworkManager outputNetworkManager;
+    RequestManager requestManager;
     ObjectInputStream in;
     ObjectOutputStream out;
-    PaintingManager pm;
+    ResponseManager responseManager;
+    DataManager dataManager;
     Socket conn;
     public Client(Socket conn) throws IOException {
         this.conn = conn;
@@ -28,14 +25,10 @@ public class Client {
     private void initManager() throws IOException {
         in = new ObjectInputStream(conn.getInputStream());
         out = new ObjectOutputStream(conn.getOutputStream());
-        this.pm = new PaintingManager();
-        new MyFrame(pm);
-        BlockingQueue<Painting> createResponse = new ArrayBlockingQueue<>(1);
-        BlockingQueue<Boolean> removeResponse = new ArrayBlockingQueue<>(1);
-        BlockingQueue<Boolean> selectResponse = new ArrayBlockingQueue<>(1);
-        inputNetworkManager = new InputNetworkManager(pm, createResponse, removeResponse, selectResponse);
-        outputNetworkManager = new OutputNetworkManager(out, createResponse, removeResponse, selectResponse);
-        pm.setOutputNetworkManager(outputNetworkManager);
+        this.dataManager = new DataManager();
+        this.responseManager = new ResponseManager(dataManager);
+        requestManager = new RequestManager(out);
+        new MyFrame(dataManager,requestManager,responseManager);
     }
     private void runClient(){
         while (true) {
@@ -43,17 +36,17 @@ public class Client {
                 Response response = (Response) in.readObject();
                 System.out.println(response);
                 if (response instanceof create) {
-                    inputNetworkManager.create(((create) response));
+                    responseManager.create(((create) response).getObject(), response.isReply());
                 } else if (response instanceof remove) {
-                    inputNetworkManager.remove((remove) response);
+                    responseManager.remove(((remove) response).getId());
                 } else if (response instanceof update) {
-                    inputNetworkManager.update((update) response);
+                    responseManager.update(((update) response).getObject());
                 } else if (response instanceof select) {
-                    inputNetworkManager.select((select) response);
+                    responseManager.select(((select) response).getId(), response.isReply());
                 } else if (response instanceof unselect) {
-                    inputNetworkManager.unselect((unselect) response);
+                    responseManager.free(((unselect) response).getId(), response.isReply());
                 } else if (response instanceof init) {
-                    outputNetworkManager.init(((init) response).getCONNECTION_ID());
+                    requestManager.init(((init) response).getCONNECTION_ID());
                 } else {
                     System.out.println("Unknown message type");
                     break;

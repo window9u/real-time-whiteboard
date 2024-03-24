@@ -24,6 +24,7 @@ public class Connection implements Runnable {
             while (true) {
                 try {
                     Request m= (Request) in.readObject();
+                    System.out.println(m);
                     requestQueue.put(m);
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -33,7 +34,7 @@ public class Connection implements Runnable {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Connection closed");
         }finally {
             try {
                 this.conn.close();

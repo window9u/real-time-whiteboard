@@ -58,6 +58,8 @@ public class Painting implements Serializable {
         return "Painting{" +
                 ", isSelected=" + isSelected +
                 ", id=" + id +
+                ", x=" + startPoint.x +
+                ", y=" + startPoint.y +
                 '}';
     }
 }
