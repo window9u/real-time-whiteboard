@@ -1,11 +1,12 @@
 package client.component;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Painting implements java.io.Serializable{
+public class Painting implements Serializable {
     protected Point startPoint;
     protected Point endPoint;
-    private boolean isSelected;
+    private boolean isSelected=true;
     protected int id;
     protected Color color=null;
     protected Color fillColor=null;
@@ -30,7 +31,7 @@ public class Painting implements java.io.Serializable{
     public void select(){
         this.isSelected=true;
     }
-    public void unSelect(){
+    public void unselect(){
         this.isSelected=false;
     }
     public boolean isSelected(){
@@ -51,5 +52,14 @@ public class Painting implements java.io.Serializable{
     }
     public boolean isClickMoveArea(Point p){//will be overridden by the subclasses
         return false;
+    }
+    @Override
+    public String toString() {
+        return "Painting{" +
+                ", isSelected=" + isSelected +
+                ", id=" + id +
+                ", x=" + startPoint.x +
+                ", y=" + startPoint.y +
+                '}';
     }
 }

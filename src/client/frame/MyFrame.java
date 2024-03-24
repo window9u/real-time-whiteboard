@@ -1,38 +1,36 @@
 package client.frame;
 
-import client.PaintingManager;
+import client.DataManager;
+import client.network.RequestManager;
+import client.network.ResponseManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MyFrame extends JFrame {
-    private final PaintingManager paintingManager;
+    private final RequestManager requestManager;
+    private final DataManager dataManager;
     public final static int RESIZE_AREA = 10;
     public final static Color SELECTED_COLOR = Color.RED;
     private final static int FRAME_WIDTH = 1000;
     private final static int  FRAME_HEIGHT = 1000;
-    private FrameManager frameManager;
 
 
-    public MyFrame(PaintingManager pm) {
-        this.paintingManager = pm;
+    public MyFrame(DataManager dataManager , RequestManager requestManager, ResponseManager responseManager) {
+        this.requestManager = requestManager;
+        this.dataManager = dataManager;
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addFrameManager();
-        addMenuArea();
-        addDrawingArea();
+        init(responseManager);
         setVisible(true);
     }
-    public void addFrameManager() {
-        this.frameManager = new FrameManager(this.paintingManager);
-    }
-
-    public void addMenuArea() {
+    private void init(ResponseManager responseManager) {
+        FrameManager frameManager = new FrameManager(this.dataManager, this.requestManager);
+        responseManager.setFrameManager(frameManager);
         this.add(new MenuArea(frameManager), BorderLayout.NORTH);
-    }
-
-    private void addDrawingArea() {
-        this.add(new DrawArea(frameManager), BorderLayout.CENTER);
+        DrawArea drawArea= new DrawArea(frameManager);
+        this.add(drawArea, BorderLayout.CENTER);
+        frameManager.registerDrawArea(drawArea);
     }
 
 }

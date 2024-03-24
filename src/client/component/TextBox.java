@@ -21,7 +21,7 @@ public class TextBox extends Rectangle {
         }
     }
     @Override
-    public void draw(Graphics g) {
+    final public void draw(Graphics g) {
         super.draw(g);
         Graphics2D g2d = (Graphics2D) g;
         String[] lines = text.split("\n");
@@ -30,5 +30,11 @@ public class TextBox extends Rectangle {
             g2d.drawString(line, startPoint.x, currentY);
             currentY += g2d.getFontMetrics().getHeight();
         }
+    }
+    @Override
+    final public String toString() {
+        return super.toString()+"TextBox{" +
+                "text='" + text + '\'' +
+                '}';
     }
 }
