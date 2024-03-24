@@ -68,8 +68,6 @@ public  class Rectangle extends Painting {
     @Override
     public String toString() {
         return super.toString()+"Rectangle{" +
-                "startPoint=" + startPoint +
-                ", endPoint=" + endPoint +
                 '}';
     }
 

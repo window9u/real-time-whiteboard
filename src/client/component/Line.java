@@ -73,8 +73,6 @@ public class Line extends Painting {
     @Override
     final public String toString() {
         return super.toString()+"Line{" +
-                "startSelected=" + startSelected +
-                ", endSelected=" + endSelected +
                 '}';
     }
 }

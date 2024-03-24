@@ -64,7 +64,6 @@ public class Circle extends Painting {
     @Override
     final public String toString() {
         return super.toString()+"Circle{" +
-                "radius=" + radius +
                 '}';
     }
 }

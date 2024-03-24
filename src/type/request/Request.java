@@ -14,7 +14,7 @@ public class Request implements Serializable {
     public String toString() {
         return "Request{" +
                 "CONNECTION_ID=" + CONNECTION_ID +
-                '}';
+                "\n}";
     }
 
 }
