@@ -23,8 +23,8 @@ public class Listener {
                     Socket connection = serverSocket.accept();
                     System.out.println("사용자접속: "+connection);
                     ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                    controller.initConnection(out);
-                    new Thread(new Connection(connection, requestQueue)).start();
+                    controller.initConnection(out, connection.hashCode());
+                    new Thread(new Connection(connection, requestQueue,controller)).start();
                 }catch (IOException e) {
                     e.printStackTrace();
                     break;

@@ -2,9 +2,7 @@ package Server;
 
 import type.request.Request;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -13,11 +11,11 @@ public class Main {
         //config setting
         int PORT = 9999;
         int QUEUE_SIZE = 100;
-        List<socketWriter> outList = Collections.synchronizedList(new ArrayList<>());
+        HashMap<Integer,socketWriter> outMap = new HashMap<>();
         BlockingQueue<Request> requestQueue = new ArrayBlockingQueue<>(QUEUE_SIZE);
 
         //start controller
-        Controller controller = new Controller(outList, requestQueue);
+        Controller controller = new Controller(outMap, requestQueue);
         new Thread(controller).start();
 
         //start server

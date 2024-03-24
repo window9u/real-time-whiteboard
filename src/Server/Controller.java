@@ -12,29 +12,30 @@ import type.request.update;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 public class Controller implements Runnable {
 
     private final BlockingQueue<Request> requestQueue;
-    private final List<socketWriter> outlist;
+    private final HashMap<Integer, socketWriter> connections;
     private final HashMap<Integer, Painting> paintings;
     private static int OBJECT_ID = 0;
-    private static int CONNECTION_ID = 0;
 
-    public Controller(List<socketWriter> outlist, BlockingQueue<Request> requestQueue) {
-        this.outlist = outlist;
+    public Controller(HashMap<Integer, socketWriter> connections, BlockingQueue<Request> requestQueue) {
+        this.connections = connections;
         this.requestQueue = requestQueue;
         paintings = new HashMap<>();
+    }
+
+    public void removeConnection(int CONNECTION_ID) {
+        connections.remove(CONNECTION_ID);
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                Request req=requestQueue.take();
-                System.out.println(req);
+                Request req = requestQueue.take();
                 if (req instanceof create) {
                     processCreate(((create) req));
                 } else if (req instanceof remove) {
@@ -55,8 +56,9 @@ public class Controller implements Runnable {
             }
         }
     }
-    public void initConnection(ObjectOutputStream out){
-        try{
+
+    public void initConnection(ObjectOutputStream out, int CONNECTION_ID) {
+        try {
             out.writeObject(new type.response.init(CONNECTION_ID));
             for (Painting painting : paintings.values()) {
                 out.writeObject(new type.response.create(painting));
@@ -64,40 +66,43 @@ public class Controller implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        outlist.add(new socketWriter(out,CONNECTION_ID++));
+        connections.put(CONNECTION_ID, new socketWriter(out, CONNECTION_ID));
     }
+
     private void sendResponseToAll(type.response.Response res, int requestSocket_ID) {
-        for (socketWriter out : outlist) {
-            if(out.getCONNECTION_ID() == requestSocket_ID) {
+        for (socketWriter out : connections.values()) {
+            if (out.getCONNECTION_ID() == requestSocket_ID) {
                 res.setStatus(Status.REPLY);
             }
             try {
                 out.write(res);
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 res.setStatus(Status.SERVER_SENT_RESPONSE);
             }
         }
     }
+
     private void processCreate(create req) {
         Painting painting = req.getObject();
         painting.setId(generateId());
         paintings.put(painting.getId(), painting);
-        type.response.create res=new type.response.create(painting);
-        sendResponseToAll(res,req.getCONNECTION_ID());
+        type.response.create res = new type.response.create(painting);
+        sendResponseToAll(res, req.getCONNECTION_ID());
     }
 
     private void processRemove(remove req) {
         int id = req.getPainting_id();
         paintings.remove(id);
-        type.response.remove res=new type.response.remove(id);
-        sendResponseToAll(res,req.getCONNECTION_ID());
+        type.response.remove res = new type.response.remove(id);
+        sendResponseToAll(res, req.getCONNECTION_ID());
     }
+
     private void processUpdate(update req) {
-        type.response.update res=new type.response.update(req.getObject());
-        for(socketWriter out : outlist){
-            if(out.getCONNECTION_ID() != req.getCONNECTION_ID())
+        type.response.update res = new type.response.update(req.getObject());
+        for (socketWriter out : connections.values()) {
+            if (out.getCONNECTION_ID() != req.getCONNECTION_ID())
                 try {
                     out.write(res);
                 } catch (IOException e) {
@@ -105,38 +110,41 @@ public class Controller implements Runnable {
                 }
         }
     }
+
     private void processSelect(select req) {
         int id = req.getPaintingId();
-        type.response.select res=new type.response.select(id);
-        if(paintings.get(id).isSelected()) {//if the object is already selected
+        type.response.select res = new type.response.select(id);
+        if (paintings.get(id).isSelected()) {//if the object is already selected
             res.setStatus(Status.ERROR);
             res.setErrorMessage("Object is already selected");
             try {
-                outlist.get(req.getCONNECTION_ID()).write(res);
+                connections.get(req.getCONNECTION_ID()).write(res);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{//if the object is selected by my request
+        } else {//if the object is selected by my request
             paintings.get(id).select();
-            sendResponseToAll(res,req.getCONNECTION_ID());
+            sendResponseToAll(res, req.getCONNECTION_ID());
         }
     }
+
     private void processUnselect(unselect req) {
         int id = req.getPaintingId();
-        type.response.unselect res=new type.response.unselect(id);
-        if(!paintings.get(id).isSelected()) {//if the object is already unselected
+        type.response.unselect res = new type.response.unselect(id);
+        if (!paintings.get(id).isSelected()) {//if the object is already unselected
             res.setStatus(Status.ERROR);
             res.setErrorMessage("Object is already unselected");
             try {
-                outlist.get(req.getCONNECTION_ID()).write(res);
+                connections.get(req.getCONNECTION_ID()).write(res);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{//if the object is unselected by my request
+        } else {//if the object is unselected by my request
             paintings.get(id).unselect();
-            sendResponseToAll(res,req.getCONNECTION_ID());
+            sendResponseToAll(res, req.getCONNECTION_ID());
         }
     }
+
     private int generateId() {
         return OBJECT_ID++;
     }

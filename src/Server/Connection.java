@@ -11,9 +11,11 @@ import java.util.concurrent.BlockingQueue;
 public class Connection implements Runnable {
     private final BlockingQueue<Request> requestQueue;
     private final Socket conn;
-    public Connection(Socket conn, BlockingQueue<Request> requestQueue) throws IOException {
+    private final Controller controller;
+    public Connection(Socket conn, BlockingQueue<Request> requestQueue,Controller controller) throws IOException {
         this.conn=conn;
         this.requestQueue = requestQueue;
+        this.controller = controller;
     }
     @Override
     public void run() {
@@ -35,6 +37,7 @@ public class Connection implements Runnable {
         }finally {
             try {
                 this.conn.close();
+                controller.removeConnection(this.conn.hashCode());
             } catch (IOException e) {
                 e.printStackTrace();
             }
