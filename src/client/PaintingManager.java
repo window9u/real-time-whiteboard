@@ -22,7 +22,7 @@ public class PaintingManager {
     public void registerDrawingArea(DrawArea drawArea) {
         this.drawArea = drawArea;
     }
-    private void repaint() {
+    public void repaint() {
         if (drawArea != null) {
             drawArea.repaint();
         }
@@ -32,7 +32,7 @@ public class PaintingManager {
         this.out = outputNetworkManager;
     }
 
-    public Painting createRectangle(Point start) {
+    public Painting createRectangleRequest(Point start) {
         //pessimistic approach
         Point end = new Point(start.x + 100, start.y + 100);
         Painting p = new Rectangle(start, end);
@@ -44,7 +44,7 @@ public class PaintingManager {
         }
     }
 
-    public Painting createCircle(Point start) {
+    public Painting createCircleRequest(Point start) {
         //pessimistic approach
         Painting p = new Circle(start, 50);
         try {
@@ -55,7 +55,7 @@ public class PaintingManager {
         }
     }
 
-    public Painting createTextBox(Point start) {
+    public Painting createTextBoxRequest(Point start) {
         //pessimistic approach
         Painting p = new TextBox(start, new Point(start.x + 140, start.y + 20));
         try {
@@ -66,7 +66,7 @@ public class PaintingManager {
         }
     }
 
-    public Painting createLine(Point start) {
+    public Painting createLineRequest(Point start) {
         //pessimistic approach
         Point end = new Point(start.x + 100, start.y);
         Painting p = new Line(start, end);
@@ -78,7 +78,7 @@ public class PaintingManager {
         }
     }
 
-    public void removePaint(int id) {
+    public void RemoveRequest(int id) {
         //pessimistic approach
         try {
             out.remove(id);
@@ -107,7 +107,7 @@ public class PaintingManager {
         return null;
     }
 
-    public void unSelect(Painting focusedPainting) {
+    public void unSelectRequest(Painting focusedPainting) {
         //pessimistic approach
         try {
             out.unselect(focusedPainting.getId());
@@ -117,7 +117,7 @@ public class PaintingManager {
     }
 
 
-    public void setColor(Painting p, Color color) {
+    public void setColorRequest(Painting p, Color color) {
         //optimistic approach
         p.setColor(color);
         try {
@@ -127,7 +127,7 @@ public class PaintingManager {
         }
     }
 
-    public void setFillColor(Painting p, Color color) {
+    public void setFillColorRequest(Painting p, Color color) {
         //optimistic approach
         p.setFillColor(color);
         try {
@@ -137,7 +137,7 @@ public class PaintingManager {
         }
     }
 
-    public void setStroke(Painting p, Stroke stroke) {
+    public void setStrokeRequest(Painting p, Stroke stroke) {
         //optimistic approach
         p.setStroke(stroke);
         try {
@@ -147,10 +147,7 @@ public class PaintingManager {
         }
     }
 
-
-
-
-    public void movePainting(Painting focusedPainting, int dx, int dy) {
+    public void moveRequest(Painting focusedPainting, int dx, int dy) {
         focusedPainting.move(dx, dy);
         try {
             out.update(focusedPainting);
@@ -159,7 +156,7 @@ public class PaintingManager {
         }
     }
 
-    public void resizePainting(Painting focusedPainting, int dx, int dy) {
+    public void resizeRequest(Painting focusedPainting, int dx, int dy) {
         focusedPainting.resize(dx, dy);
         try {
             out.update(focusedPainting);
@@ -168,7 +165,7 @@ public class PaintingManager {
         }
     }
 
-    public void addText(TextBox focusedPainting, String text) {
+    public void addTextRequest(TextBox focusedPainting, String text) {
         focusedPainting.addText(text);
         try {
             out.update(focusedPainting);
@@ -177,7 +174,7 @@ public class PaintingManager {
         }
     }
 
-    public void removeText(TextBox focusedPainting) {
+    public void removeTextRequest(TextBox focusedPainting) {
         focusedPainting.removeText();
         try {
             out.update(focusedPainting);
@@ -185,23 +182,23 @@ public class PaintingManager {
             e.printStackTrace();
         }
     }
-    public void serverCreateObject(Painting p){
+    public void createObjectResponse(Painting p){
         paintings.put(p.getId(), p);
         repaint();
     }
-    public void serverRemoveObject(int id){
+    public void removeResponse(int id){
         paintings.remove(id);
         repaint();
     }
-    public void serverUpdateObject(Painting p){
+    public void updateResponse(Painting p){
         paintings.put(p.getId(), p);
         repaint();
     }
-    public void serverSelectObject(int id){
+    public void selectResponse(int id){
         paintings.get(id).select();
         repaint();
     }
-    public void serverUnselectObject(int id){
+    public void unselectResponse(int id){
         paintings.get(id).unselect();
         repaint();
     }
