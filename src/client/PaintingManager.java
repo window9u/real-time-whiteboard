@@ -2,6 +2,7 @@ package client;
 
 import client.component.*;
 import client.component.Rectangle;
+import client.frame.DrawArea;
 import client.network.OutputNetworkManager;
 
 import java.awt.*;
@@ -13,9 +14,18 @@ public class PaintingManager {
     private final HashMap<Integer, Painting> paintings;
     private OutputNetworkManager out;
 
+    private DrawArea drawArea;
     public PaintingManager() {
         //if server sends paintings, use them
         paintings = new HashMap<>();
+    }
+    public void registerDrawingArea(DrawArea drawArea) {
+        this.drawArea = drawArea;
+    }
+    private void repaint() {
+        if (drawArea != null) {
+            drawArea.repaint();
+        }
     }
 
     public void setOutputNetworkManager(OutputNetworkManager outputNetworkManager) {
@@ -177,17 +187,22 @@ public class PaintingManager {
     }
     public void serverCreateObject(Painting p){
         paintings.put(p.getId(), p);
+        repaint();
     }
     public void serverRemoveObject(int id){
         paintings.remove(id);
+        repaint();
     }
     public void serverUpdateObject(Painting p){
         paintings.put(p.getId(), p);
+        repaint();
     }
     public void serverSelectObject(int id){
         paintings.get(id).select();
+        repaint();
     }
     public void serverUnselectObject(int id){
         paintings.get(id).unselect();
+        repaint();
     }
 }
