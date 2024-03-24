@@ -56,6 +56,7 @@ public class Controller implements Runnable {
     }
     public void initConnection(ObjectOutputStream out){
         try{
+            System.out.println("initConnection");
             out.writeObject(new type.response.init(CONNECTION_ID));
             for (Painting painting : paintings.values()) {
                 out.writeObject(new type.response.create(painting));

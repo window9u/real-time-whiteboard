@@ -66,6 +66,11 @@ public class Client {
                 throw new RuntimeException(e);
             }
         }
+        try {
+            conn.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
