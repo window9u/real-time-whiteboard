@@ -8,5 +8,11 @@ public class unselect extends Request {
     public int getPaintingId(){
         return paintingId;
     }
+    @Override
+    public String toString() {
+        return super.toString()+"unselect{" +
+                "paintingId=" + paintingId +
+                '}';
+    }
 
 }

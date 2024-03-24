@@ -12,4 +12,10 @@ public class create extends Request {
     public Painting getObject(){
         return object;
     }
+    @Override
+    public String toString() {
+        return super.toString()+"create{" +
+                "object=" + object +
+                '}';
+    }
 }
