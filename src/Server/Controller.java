@@ -34,6 +34,7 @@ public class Controller implements Runnable {
         while (true) {
             try {
                 Request req=requestQueue.take();
+                System.out.println(req);
                 if (req instanceof create) {
                     processCreate(((create) req));
                 } else if (req instanceof remove) {
@@ -56,7 +57,6 @@ public class Controller implements Runnable {
     }
     public void initConnection(ObjectOutputStream out){
         try{
-            System.out.println("initConnection");
             out.writeObject(new type.response.init(CONNECTION_ID));
             for (Painting painting : paintings.values()) {
                 out.writeObject(new type.response.create(painting));

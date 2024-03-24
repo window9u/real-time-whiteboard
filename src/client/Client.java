@@ -43,6 +43,7 @@ public class Client {
             System.out.println("get response");
             try {
                 Response response = (Response) in.readObject();
+                System.out.println(response);
                 if (response instanceof create) {
                     inputNetworkManager.create(((create) response));
                 } else if (response instanceof remove) {
@@ -55,7 +56,6 @@ public class Client {
                     inputNetworkManager.unselect((unselect) response);
                 } else if (response instanceof init) {
                     outputNetworkManager.init(((init) response).getCONNECTION_ID());
-                    System.out.println("init connection" + ((init) response).getCONNECTION_ID());
                 } else {
                     System.out.println("Unknown message type");
                     break;
