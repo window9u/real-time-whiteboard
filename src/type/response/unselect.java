@@ -9,4 +9,10 @@ public class unselect extends Response {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return super.toString()+"unselect{" +
+                "id=" + id +
+                '}';
+    }
 }

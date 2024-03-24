@@ -10,4 +10,11 @@ public class Request implements Serializable {
     public void setCONNECTION_ID(int CONNECTION_ID){
         this.CONNECTION_ID = CONNECTION_ID;
     }
+    @Override
+    public String toString() {
+        return "Request{" +
+                "CONNECTION_ID=" + CONNECTION_ID +
+                '}';
+    }
+
 }

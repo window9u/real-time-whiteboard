@@ -23,7 +23,6 @@ public class Connection implements Runnable {
                 try {
                     Request m= (Request) in.readObject();
                     requestQueue.put(m);
-                    System.out.println("get request from"+m.getCONNECTION_ID());
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                     break;

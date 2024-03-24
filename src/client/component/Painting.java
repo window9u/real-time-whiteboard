@@ -53,4 +53,11 @@ public class Painting implements Serializable {
     public boolean isClickMoveArea(Point p){//will be overridden by the subclasses
         return false;
     }
+    @Override
+    public String toString() {
+        return "Painting{" +
+                ", isSelected=" + isSelected +
+                ", id=" + id +
+                '}';
+    }
 }

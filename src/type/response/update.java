@@ -10,4 +10,10 @@ public class update extends Response {
     public Painting getObject(){
         return object;
     }
+    @Override
+    public String toString() {
+        return super.toString()+"update{" +
+                "object=" + object +
+                '}';
+    }
 }

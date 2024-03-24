@@ -12,5 +12,11 @@ public class create extends Response {
     public Painting getObject(){
         return object;
     }
+    @Override
+    final public String toString() {
+        return super.toString()+"create{" +
+                "object=" + object +
+                '}';
+    }
 
 }

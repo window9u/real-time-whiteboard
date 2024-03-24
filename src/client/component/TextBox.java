@@ -31,4 +31,10 @@ public class TextBox extends Rectangle {
             currentY += g2d.getFontMetrics().getHeight();
         }
     }
+    @Override
+    final public String toString() {
+        return super.toString()+"TextBox{" +
+                "text='" + text + '\'' +
+                '}';
+    }
 }

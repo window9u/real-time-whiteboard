@@ -10,4 +10,10 @@ public class init extends Response implements Serializable {
     public int getCONNECTION_ID(){
         return CONNECTION_ID;
     }
+    @Override
+    public String toString() {
+        return super.toString()+"init{" +
+                "CONNECTION_ID=" + CONNECTION_ID +
+                '}';
+    }
 }

@@ -65,5 +65,12 @@ public  class Rectangle extends Painting {
         //check if the point is in the move area(center of rectangle)
         return p.x >= startPoint.x + 5 && p.x <= endPoint.x - 5 && p.y >= startPoint.y + 5 && p.y <= endPoint.y - 5;
     }
+    @Override
+    public String toString() {
+        return super.toString()+"Rectangle{" +
+                "startPoint=" + startPoint +
+                ", endPoint=" + endPoint +
+                '}';
+    }
 
 }

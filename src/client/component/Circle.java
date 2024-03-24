@@ -61,5 +61,10 @@ public class Circle extends Painting {
     final public boolean isClickMoveArea(Point p){
         return contains(p) && p.distance(startPoint) <= radius - MyFrame.RESIZE_AREA;
     }
-
+    @Override
+    final public String toString() {
+        return super.toString()+"Circle{" +
+                "radius=" + radius +
+                '}';
+    }
 }

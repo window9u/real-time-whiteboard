@@ -8,5 +8,11 @@ public class select extends Response {
     public int getId(){
         return id;
     }
+    @Override
+    public String toString() {
+        return super.toString()+"select{" +
+                "id=" + id +
+                '}';
+    }
 
 }

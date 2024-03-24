@@ -70,4 +70,11 @@ public class Line extends Painting {
     final public boolean isClickMoveArea(Point p){
         return contains(p);
     }
+    @Override
+    final public String toString() {
+        return super.toString()+"Line{" +
+                "startSelected=" + startSelected +
+                ", endSelected=" + endSelected +
+                '}';
+    }
 }

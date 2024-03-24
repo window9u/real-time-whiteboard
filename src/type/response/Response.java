@@ -22,4 +22,11 @@ public class Response implements Serializable {
     public String getErrorMessage(){
         return errorMessage;
     }
+    @Override
+    public String toString() {
+        return "Response{" +
+                "status=" + status +
+                ", errorMessage='" + errorMessage + '\'' +
+                '}';
+    }
 }
