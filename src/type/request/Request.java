@@ -1,6 +1,8 @@
 package type.request;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable {
     private int CONNECTION_ID;
     public int getCONNECTION_ID(){
         return CONNECTION_ID;

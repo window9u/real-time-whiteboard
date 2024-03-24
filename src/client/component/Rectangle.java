@@ -11,16 +11,16 @@ public  class Rectangle extends Painting {
         this.endPoint = end;
     }
     @Override
-    public boolean contains(Point p) {
+    final public boolean contains(Point p) {
         return p.x >= startPoint.x && p.x <= endPoint.x && p.y >= startPoint.y && p.y <= endPoint.y;
     }
     @Override
-    public void move(int dx, int dy) {
+    final public void move(int dx, int dy) {
         startPoint.translate(dx, dy);
         endPoint.translate(dx, dy);
     }
     @Override
-    public void resize(int dx, int dy){
+    final public void resize(int dx, int dy){
         endPoint.translate(dx, dy);
         if (endPoint.x < startPoint.x) {
             int temp = startPoint.x;
@@ -56,12 +56,12 @@ public  class Rectangle extends Painting {
         g2d.setStroke(originalStroke);
     }
     @Override
-    public boolean isClickResizeArea(Point p){
+    final public boolean isClickResizeArea(Point p){
         //check if the point is in the resize area(edge of rectangle)
         return this.contains(p) && !this.isClickMoveArea(p);
     }
     @Override
-    public boolean isClickMoveArea(Point p){
+    final public boolean isClickMoveArea(Point p){
         //check if the point is in the move area(center of rectangle)
         return p.x >= startPoint.x + 5 && p.x <= endPoint.x - 5 && p.y >= startPoint.y + 5 && p.y <= endPoint.y - 5;
     }

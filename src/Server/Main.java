@@ -14,7 +14,6 @@ public class Main {
     public static void main(String[] args)  {
         int PORT = 9999;
         int QUEUE_SIZE = 100;
-        int CONNECTION_ID = 0;
         //the list of output streams to send messages to all clients
         List<socketWriter> outList = Collections.synchronizedList(new ArrayList<>());
         //client's request to send messages to the centralized controller
@@ -30,7 +29,8 @@ public class Main {
                 //accept the connection from the client
                 try(Socket connection = serverSocket.accept()) {
                     System.out.println("사용자접속: "+connection);
-                    controller.initConnection(new ObjectOutputStream(connection.getOutputStream()));
+                    ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                    controller.initConnection(out);
                     ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                     new Thread(new Connection(in, requestQueue)).start();
                 }catch (IOException e) {

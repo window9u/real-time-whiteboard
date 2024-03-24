@@ -13,17 +13,17 @@ public class Circle extends Painting {
     }
 
     @Override
-    public boolean contains(Point p) {
+    final public boolean contains(Point p) {
         double distance = this.startPoint.distance(p);
         return distance <= radius;
     }
 
     @Override
-    public void move(int dx, int dy) {
+    final public void move(int dx, int dy) {
         this.startPoint.translate(dx, dy);
     }
     @Override
-    public void resize(int dx, int dy){
+    final public void resize(int dx, int dy){
         if(Math.abs(dx) > Math.abs(dy)){
             this.radius += dx;
         }else{
@@ -31,7 +31,7 @@ public class Circle extends Painting {
         }
     }
     @Override
-    public void draw(java.awt.Graphics g) {
+    final public void draw(java.awt.Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         Color originalColor = g2d.getColor();
         Stroke originalStroke = g2d.getStroke();
@@ -54,11 +54,11 @@ public class Circle extends Painting {
         g2d.setStroke(originalStroke);
     }
     @Override
-    public boolean isClickResizeArea(Point p){
+    final public boolean isClickResizeArea(Point p){
         return contains(p) && p.distance(startPoint) > radius - MyFrame.RESIZE_AREA && p.distance(startPoint) < radius + MyFrame.RESIZE_AREA;
     }
     @Override
-    public boolean isClickMoveArea(Point p){
+    final public boolean isClickMoveArea(Point p){
         return contains(p) && p.distance(startPoint) <= radius - MyFrame.RESIZE_AREA;
     }
 

@@ -14,7 +14,7 @@ public class Line extends Painting {
         this.endPoint = end;
     }
     @Override
-    public boolean contains(Point p) {
+    final public boolean contains(Point p) {
         //check if the point is on the line
         double d1 = startPoint.distance(p) + p.distance(endPoint);
         double d2 = startPoint.distance(endPoint);
@@ -22,12 +22,12 @@ public class Line extends Painting {
     }
 
     @Override
-    public void move(int dx, int dy) {
+    final public void move(int dx, int dy) {
         this.startPoint.translate(dx, dy);
         this.endPoint.translate(dx, dy);
     }
     @Override
-    public void resize(int dx, int dy){
+    final public void resize(int dx, int dy){
         if(startSelected){
             startPoint.translate(dx, dy);
         }else if(endSelected) {
@@ -35,7 +35,7 @@ public class Line extends Painting {
         }
     }
     @Override
-    public void draw(Graphics g) {
+    final public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         Color originalColor = g2d.getColor();
         Stroke originalStroke = g2d.getStroke();
@@ -53,7 +53,7 @@ public class Line extends Painting {
         g2d.setStroke(originalStroke);
     }
     @Override
-    public boolean isClickResizeArea(Point p){
+    final public boolean isClickResizeArea(Point p){
         if(startPoint.distance(p) < MyFrame.RESIZE_AREA){
             startSelected = true;
             return true;
@@ -67,7 +67,7 @@ public class Line extends Painting {
         }
     }
     @Override
-    public boolean isClickMoveArea(Point p){
+    final public boolean isClickMoveArea(Point p){
         return contains(p);
     }
 }

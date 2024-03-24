@@ -21,7 +21,7 @@ public class TextBox extends Rectangle {
         }
     }
     @Override
-    public void draw(Graphics g) {
+    final public void draw(Graphics g) {
         super.draw(g);
         Graphics2D g2d = (Graphics2D) g;
         String[] lines = text.split("\n");

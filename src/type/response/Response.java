@@ -2,7 +2,9 @@ package type.response;
 
 import type.Status;
 
-public class Response {
+import java.io.Serializable;
+
+public class Response implements Serializable {
     private type.Status status=Status.SERVER_SENT_RESPONSE;
     private String errorMessage;
     public void setStatus(type.Status status){
