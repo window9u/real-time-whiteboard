@@ -37,7 +37,9 @@ public class PaintingManager {
         Point end = new Point(start.x + 100, start.y + 100);
         Painting p = new Rectangle(start, end);
         try {
-            return out.create(p);
+            Painting created = out.create(p);
+            paintings.put(created.getId(), created);
+            return created;
         } catch (IOException | InterruptedException e ) {
             e.printStackTrace();
             return null;
@@ -48,7 +50,9 @@ public class PaintingManager {
         //pessimistic approach
         Painting p = new Circle(start, 50);
         try {
-            return out.create(p);
+            Painting created = out.create(p);
+            paintings.put(created.getId(), created);
+            return created;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -59,7 +63,9 @@ public class PaintingManager {
         //pessimistic approach
         Painting p = new TextBox(start, new Point(start.x + 140, start.y + 20));
         try {
-            return out.create(p);
+            Painting created = out.create(p);
+            paintings.put(created.getId(), created);
+            return created;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -71,7 +77,9 @@ public class PaintingManager {
         Point end = new Point(start.x + 100, start.y);
         Painting p = new Line(start, end);
         try {
-            return out.create(p);
+            Painting created = out.create(p);
+            paintings.put(created.getId(), created);
+            return created;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
