@@ -1,4 +1,4 @@
-package type.request;
+package message.request;
 
 public class unselect extends Request {
     private final int paintingId;

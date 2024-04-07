@@ -1,18 +1,18 @@
-package type.response;
+package message.response;
 
-public class select extends Response {
+public class unselect extends Response {
     private final int id;
-    public select(int id){
+    public unselect(int id){
         this.id = id;
     }
     public int getId(){
         return id;
     }
+
     @Override
     public String toString() {
-        return super.toString()+"select{" +
+        return super.toString()+"unselect{" +
                 "id=" + id +
                 '}';
     }
-
 }

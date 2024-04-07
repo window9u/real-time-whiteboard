@@ -1,4 +1,4 @@
-package type.request;
+package message.request;
 
 public class save extends Request {
 }

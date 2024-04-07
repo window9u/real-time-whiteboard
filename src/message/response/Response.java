@@ -1,13 +1,13 @@
-package type.response;
+package message.response;
 
-import type.Status;
+import message.Status;
 
 import java.io.Serializable;
 
 public class Response implements Serializable {
-    private type.Status status=Status.SERVER_SENT_RESPONSE;
+    private message.Status status=Status.SERVER_SENT_RESPONSE;
     private String errorMessage;
-    public void setStatus(type.Status status){
+    public void setStatus(message.Status status){
         this.status = status;
     }
     public boolean isReply(){

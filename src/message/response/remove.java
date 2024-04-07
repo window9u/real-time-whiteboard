@@ -1,17 +1,16 @@
-package type.response;
+package message.response;
 
-public class unselect extends Response {
+public class remove extends Response {
     private final int id;
-    public unselect(int id){
+    public remove(int id){
         this.id = id;
     }
     public int getId(){
         return id;
     }
-
     @Override
     public String toString() {
-        return super.toString()+"unselect{" +
+        return super.toString()+"remove{" +
                 "id=" + id +
                 '}';
     }

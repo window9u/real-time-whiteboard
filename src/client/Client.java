@@ -3,7 +3,7 @@ package client;
 import client.frame.MyFrame;
 import client.network.RequestManager;
 import client.network.ResponseManager;
-import type.response.*;
+import message.response.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,8 +17,10 @@ public class Client {
     ResponseManager responseManager;
     DataManager dataManager;
     Socket conn;
-    public Client(Socket conn) throws IOException {
+    String name;
+    public Client(Socket conn,String name) throws IOException {
         this.conn = conn;
+        this.name = name;
         initManager();
         runClient();
     }
@@ -28,6 +30,7 @@ public class Client {
         this.dataManager = new DataManager();
         this.responseManager = new ResponseManager(dataManager);
         requestManager = new RequestManager(out);
+        requestManager.sendName(name);
         new MyFrame(dataManager,requestManager,responseManager);
     }
     private void runClient(){
@@ -47,6 +50,8 @@ public class Client {
                     responseManager.free(((unselect) response).getId(), response.isReply());
                 } else if (response instanceof init) {
                     requestManager.init(((init) response).getCONNECTION_ID());
+                } else if (response instanceof disconnect){
+                    System.out.println(response);
                 } else {
                     System.out.println("Unknown message type");
                     break;

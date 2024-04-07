@@ -1,4 +1,4 @@
-package type.response;
+package message.response;
 
 public class save extends Response {
 }

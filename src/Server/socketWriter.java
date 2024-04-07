@@ -10,7 +10,7 @@ public class socketWriter {
         this.out = out;
         this.CONNECTION_ID = CONNECTION_ID;
     }
-    public void write(type.response.Response response) throws IOException {
+    public void write(message.response.Response response) throws IOException {
         out.writeObject(response);
     }
     public int getCONNECTION_ID(){

@@ -1,4 +1,4 @@
-package type.request;
+package message.request;
 
 import client.component.Painting;
 

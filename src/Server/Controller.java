@@ -1,13 +1,14 @@
 package Server;
 
 import client.component.Painting;
-import type.Status;
-import type.request.*;
-import type.request.create;
-import type.request.remove;
-import type.request.select;
-import type.request.unselect;
-import type.request.update;
+import message.Status;
+import message.request.*;
+import message.request.create;
+import message.request.remove;
+import message.request.select;
+import message.request.unselect;
+import message.request.update;
+import message.response.disconnect;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -27,8 +28,16 @@ public class Controller implements Runnable {
         paintings = new HashMap<>();
     }
 
-    public void removeConnection(int CONNECTION_ID) {
+    public void removeConnection(int CONNECTION_ID, String name) {
         connections.remove(CONNECTION_ID);
+        for (socketWriter out : connections.values()) {
+            try {
+                out.write(new disconnect(name));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override
@@ -59,9 +68,9 @@ public class Controller implements Runnable {
 
     public void initConnection(ObjectOutputStream out, int CONNECTION_ID) {
         try {
-            out.writeObject(new type.response.init(CONNECTION_ID));
+            out.writeObject(new message.response.init(CONNECTION_ID));
             for (Painting painting : paintings.values()) {
-                out.writeObject(new type.response.create(painting));
+                out.writeObject(new message.response.create(painting));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,7 +78,7 @@ public class Controller implements Runnable {
         connections.put(CONNECTION_ID, new socketWriter(out, CONNECTION_ID));
     }
 
-    private void sendResponseToAll(type.response.Response res, int requestSocket_ID) {
+    private void sendResponseToAll(message.response.Response res, int requestSocket_ID) {
         for (socketWriter out : connections.values()) {
             if (out.getCONNECTION_ID() == requestSocket_ID) {
                 res.setStatus(Status.REPLY);
@@ -88,19 +97,19 @@ public class Controller implements Runnable {
         Painting painting = req.getObject();
         painting.setId(generateId());
         paintings.put(painting.getId(), painting);
-        type.response.create res = new type.response.create(painting);
+        message.response.create res = new message.response.create(painting);
         sendResponseToAll(res, req.getCONNECTION_ID());
     }
 
     private void processRemove(remove req) {
         int id = req.getPainting_id();
         paintings.remove(id);
-        type.response.remove res = new type.response.remove(id);
+        message.response.remove res = new message.response.remove(id);
         sendResponseToAll(res, req.getCONNECTION_ID());
     }
 
     private void processUpdate(update req) {
-        type.response.update res = new type.response.update(req.getObject());
+        message.response.update res = new message.response.update(req.getObject());
         for (socketWriter out : connections.values()) {
             if (out.getCONNECTION_ID() != req.getCONNECTION_ID())
                 try {
@@ -113,7 +122,7 @@ public class Controller implements Runnable {
 
     private void processSelect(select req) {
         int id = req.getPaintingId();
-        type.response.select res = new type.response.select(id);
+        message.response.select res = new message.response.select(id);
         if (paintings.get(id).isSelected()) {//if the object is already selected
             res.setStatus(Status.ERROR);
             res.setErrorMessage("Object is already selected");
@@ -130,7 +139,7 @@ public class Controller implements Runnable {
 
     private void processUnselect(unselect req) {
         int id = req.getPaintingId();
-        type.response.unselect res = new type.response.unselect(id);
+        message.response.unselect res = new message.response.unselect(id);
         if (!paintings.get(id).isSelected()) {//if the object is already unselected
             res.setStatus(Status.ERROR);
             res.setErrorMessage("Object is already unselected");

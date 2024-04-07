@@ -1,6 +1,6 @@
 package Server;
 
-import type.request.Request;
+import message.request.Request;
 
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;

@@ -1,4 +1,4 @@
-package type;
+package message;
 
 public enum Status implements java.io.Serializable{
     ERROR,

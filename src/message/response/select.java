@@ -1,8 +1,8 @@
-package type.response;
+package message.response;
 
-public class remove extends Response {
+public class select extends Response {
     private final int id;
-    public remove(int id){
+    public select(int id){
         this.id = id;
     }
     public int getId(){
@@ -10,8 +10,9 @@ public class remove extends Response {
     }
     @Override
     public String toString() {
-        return super.toString()+"remove{" +
+        return super.toString()+"select{" +
                 "id=" + id +
                 '}';
     }
+
 }

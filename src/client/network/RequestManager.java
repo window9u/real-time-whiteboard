@@ -3,7 +3,7 @@ package client.network;
 import client.component.Painting;
 import client.component.Rectangle;
 import client.component.TextBox;
-import type.request.*;
+import message.request.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -20,6 +20,15 @@ public class RequestManager {
 
     public void init(int CONNECTION_ID) {
         this.CONNECTION_ID = CONNECTION_ID;
+    }
+
+    public void sendName(String name) {
+        init req = new init(name);
+        try {
+            out.writeObject(req);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createRectangle(Point start) {
