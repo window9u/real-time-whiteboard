@@ -10,8 +10,7 @@ public class connect extends Response{
     }
     @Override
     public String toString() {
-        return super.toString() +
-                "name='" + name + '\'' +
+        return  "name='" + name + '\'' +
                 "connected";
     }
 }
