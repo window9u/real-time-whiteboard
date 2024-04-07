@@ -74,6 +74,7 @@ public class Controller implements Runnable {
         try {
             init init = (init) in.readObject();
             name = init.getName();
+            System.out.println(name + " connected");
             sendResponseToAll(new message.response.connect(name), CONNECTION_ID);
             out.writeObject(new message.response.init(CONNECTION_ID));
             for (Painting painting : paintings.values()) {
