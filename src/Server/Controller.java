@@ -11,6 +11,7 @@ import message.request.update;
 import message.response.disconnect;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
@@ -28,7 +29,9 @@ public class Controller implements Runnable {
         paintings = new HashMap<>();
     }
 
-    public void removeConnection(int CONNECTION_ID, String name) {
+    public void removeConnection(int CONNECTION_ID) {
+        String name =connections.get(CONNECTION_ID).getName();
+        System.out.println(name+" disconnected");
         connections.remove(CONNECTION_ID);
         for (socketWriter out : connections.values()) {
             try {
@@ -66,16 +69,22 @@ public class Controller implements Runnable {
         }
     }
 
-    public void initConnection(ObjectOutputStream out, int CONNECTION_ID) {
+    public void initConnection(ObjectOutputStream out, ObjectInputStream in, int CONNECTION_ID) {
+        String name = null;
         try {
+            init init = (init) in.readObject();
+            name = init.getName();
+            sendResponseToAll(new message.response.connect(name), CONNECTION_ID);
             out.writeObject(new message.response.init(CONNECTION_ID));
             for (Painting painting : paintings.values()) {
                 out.writeObject(new message.response.create(painting));
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        connections.put(CONNECTION_ID, new socketWriter(out, CONNECTION_ID));
+        connections.put(CONNECTION_ID, new socketWriter(out, CONNECTION_ID,name));
     }
 
     private void sendResponseToAll(message.response.Response res, int requestSocket_ID) {

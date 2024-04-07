@@ -1,7 +1,6 @@
 package Server;
 
 import message.request.Request;
-import message.request.init;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,25 +22,17 @@ public class Listener {
             while(true){
                 try {
                     Socket connection = serverSocket.accept();
-                    String name=getName(connection);
-                    System.out.println("사용자접속: "+name);
                     ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                    controller.initConnection(out, connection.hashCode());
-                    new Thread(new Connection(connection, requestQueue,controller,name)).start();
+                    ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                    controller.initConnection(out,in, connection.hashCode());
+                    new Thread(new Connection(connection,in, requestQueue,controller)).start();
                 }catch (IOException e) {
                     e.printStackTrace();
                     break;
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }catch (IOException e){
             e.printStackTrace();
         }
-    }
-    private String getName(Socket connection) throws IOException, ClassNotFoundException {
-        ObjectInputStream in = (ObjectInputStream) connection.getInputStream();
-        init initMessage =(init) in.readObject();
-        return initMessage.getName();
     }
 }

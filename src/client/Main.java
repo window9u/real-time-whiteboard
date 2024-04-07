@@ -28,7 +28,7 @@ public class Main {
         try {
             Socket conn = new Socket("127.0.0.1", PORT);
             System.out.println("Server started");
-            new Client(conn, name);
+            new Client(conn, name).run();
         } catch (IOException e) {
             System.out.println("Server not started");
             e.printStackTrace();

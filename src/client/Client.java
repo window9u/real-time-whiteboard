@@ -22,7 +22,6 @@ public class Client {
         this.conn = conn;
         this.name = name;
         initManager();
-        runClient();
     }
     private void initManager() throws IOException {
         in = new ObjectInputStream(conn.getInputStream());
@@ -33,11 +32,11 @@ public class Client {
         requestManager.sendName(name);
         new MyFrame(dataManager,requestManager,responseManager);
     }
-    private void runClient(){
+    public void run(){
         while (true) {
             try {
                 Response response = (Response) in.readObject();
-                System.out.println(response);
+//                System.out.println(response);
                 if (response instanceof create) {
                     responseManager.create(((create) response).getObject(), response.isReply());
                 } else if (response instanceof remove) {
@@ -50,6 +49,8 @@ public class Client {
                     responseManager.free(((unselect) response).getId(), response.isReply());
                 } else if (response instanceof init) {
                     requestManager.init(((init) response).getCONNECTION_ID());
+                } else if (response instanceof connect) {
+                    System.out.println(response);
                 } else if (response instanceof disconnect){
                     System.out.println(response);
                 } else {
