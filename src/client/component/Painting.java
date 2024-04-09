@@ -10,7 +10,7 @@ public class Painting implements Serializable {
     protected int id;
     protected Color color=null;
     protected Color fillColor=null;
-    protected Stroke stroke=null;
+    protected Float stroke=null;
 
     public void setColor(Color color) {
         this.color = color;
@@ -20,7 +20,7 @@ public class Painting implements Serializable {
         this.fillColor = fillColor;
     }
 
-    public void setStroke(Stroke stroke) {
+    public void setStroke(Float stroke) {
         this.stroke = stroke;
     }
 

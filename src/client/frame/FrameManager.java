@@ -179,7 +179,7 @@ public class FrameManager {
             return;
         // Update the stroke of the selected Painting object
         if (curAction == Action.FOCUS) {
-            request.setStroke(focusedPainting, new BasicStroke(selectedLineWidth));
+            request.setStroke(focusedPainting,  selectedLineWidth);
         }
     }
 

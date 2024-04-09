@@ -40,7 +40,7 @@ public class Line extends Painting {
         Color originalColor = g2d.getColor();
         Stroke originalStroke = g2d.getStroke();
         if(stroke != null){
-            g2d.setStroke(stroke);
+            g2d.setStroke(new BasicStroke(stroke));
         }
         if(color != null){
             g2d.setColor(color);

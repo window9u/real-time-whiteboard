@@ -41,7 +41,7 @@ public class Circle extends Painting {
             g2d.fillOval(startPoint.x - radius, startPoint.y - radius, radius * 2, radius * 2);
         }
         if(stroke != null){
-            g2d.setStroke(stroke);
+            g2d.setStroke(new BasicStroke(stroke));
         }
         if(color != null){
             g2d.setColor(color);

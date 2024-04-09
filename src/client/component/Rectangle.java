@@ -43,7 +43,7 @@ public  class Rectangle extends Painting {
             g2d.fillRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
         }
         if(stroke != null){
-            g2d.setStroke(stroke);
+            g2d.setStroke(new BasicStroke(stroke));
         }
         if(color != null){
             g2d.setColor(color);

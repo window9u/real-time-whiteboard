@@ -137,7 +137,7 @@ public class RequestManager {
         update(p);
     }
 
-    public void setStroke(Painting p, Stroke stroke) {
+    public void setStroke(Painting p, Float stroke) {
         //optimistic approach
         p.setStroke(stroke);
         update(p);
