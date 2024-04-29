@@ -31,8 +31,20 @@ public class Controller implements Runnable {
 
     public void removeConnection(int CONNECTION_ID) {
         String name =connections.get(CONNECTION_ID).getName();
+        int selectedObject = connections.get(CONNECTION_ID).getSelectedObject();
         System.out.println(name+" disconnected");
         connections.remove(CONNECTION_ID);
+        if(selectedObject!=-1){
+            paintings.get(selectedObject).unselect();
+            message.response.unselect res= new message.response.unselect(selectedObject);
+            for (socketWriter out : connections.values()) {
+                try {
+                    out.write(res);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         for (socketWriter out : connections.values()) {
             try {
                 out.write(new disconnect(name));
@@ -40,7 +52,6 @@ public class Controller implements Runnable {
                 e.printStackTrace();
             }
         }
-
     }
 
     @Override
@@ -143,6 +154,7 @@ public class Controller implements Runnable {
             }
         } else {//if the object is selected by my request
             paintings.get(id).select();
+            connections.get(req.getCONNECTION_ID()).setSelectedObject(id);
             sendResponseToAll(res, req.getCONNECTION_ID());
         }
     }
@@ -160,6 +172,7 @@ public class Controller implements Runnable {
             }
         } else {//if the object is unselected by my request
             paintings.get(id).unselect();
+            connections.get(req.getCONNECTION_ID()).setSelectedObject(-1);
             sendResponseToAll(res, req.getCONNECTION_ID());
         }
     }
