@@ -1,4 +1,4 @@
-package Server;
+package server;
 
 import client.component.Painting;
 import message.Status;
