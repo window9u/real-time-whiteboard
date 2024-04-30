@@ -5,6 +5,7 @@ import client.network.RequestManager;
 import client.component.Painting;
 import client.component.TextBox;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -17,6 +18,7 @@ public class FrameManager {
     private final DataManager dm;
     private final RequestManager request;
     private DrawArea drawArea;
+    private JLabel printLabel;
 
     public void registerDrawArea(DrawArea drawArea) {
         this.drawArea = drawArea;
@@ -196,5 +198,12 @@ public class FrameManager {
             default:
                 return Color.BLACK;
         }
+    }
+    public void setPrintLabel(JLabel printLabel){
+        this.printLabel = printLabel;
+    }
+
+    public void print(String text){
+        printLabel.setText(text);
     }
 }

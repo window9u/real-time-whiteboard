@@ -50,9 +50,9 @@ public class Client {
                 } else if (response instanceof init) {
                     requestManager.init(((init) response).getCONNECTION_ID());
                 } else if (response instanceof connect) {
-                    System.out.println(response);
+                    responseManager.connect(((connect) response).getName());
                 } else if (response instanceof disconnect){
-                    System.out.println(response);
+                    responseManager.disconnect( ((disconnect) response).getName());
                 } else {
                     System.out.println("Unknown message type");
                     break;

@@ -31,6 +31,10 @@ public class MyFrame extends JFrame {
         DrawArea drawArea= new DrawArea(frameManager);
         this.add(drawArea, BorderLayout.CENTER);
         frameManager.registerDrawArea(drawArea);
+        JLabel printLabel = new JLabel("Initial text");
+        printLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(printLabel, BorderLayout.SOUTH);
+        frameManager.setPrintLabel(printLabel);
     }
 
 }

@@ -49,5 +49,10 @@ public class ResponseManager {
         dm.free(id);
         fm.repaint();
     }
-
+    public void connect(String name){
+        fm.print(name+" Connected");
+    }
+    public void disconnect(String name){
+        fm.print(name+" Disconnected");
+    }
 }

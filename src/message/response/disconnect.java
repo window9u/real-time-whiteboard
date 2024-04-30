@@ -6,6 +6,11 @@ public class disconnect extends Response{
     public disconnect(String name) {
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "connection{" +

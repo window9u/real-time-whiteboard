@@ -3,6 +3,8 @@ package client.network;
 import client.component.Painting;
 import client.component.Rectangle;
 import client.component.TextBox;
+import client.component.Circle;
+import client.component.Line;
 import message.request.*;
 
 import java.awt.*;
@@ -44,7 +46,7 @@ public class RequestManager {
     }
 
     public void createCircle(Point start) {
-        Painting p = new client.component.Circle(start, 50);
+        Painting p = new Circle(start, 50);
         create req = new create(p);
         req.setCONNECTION_ID(CONNECTION_ID);
         try {
@@ -55,7 +57,7 @@ public class RequestManager {
     }
 
     public void createText(Point start) {
-        Painting p = new client.component.TextBox(start, new Point(start.x + 140, start.y + 20));
+        Painting p = new TextBox(start, new Point(start.x + 140, start.y + 20));
         create req = new create(p);
         req.setCONNECTION_ID(CONNECTION_ID);
         try {
@@ -68,7 +70,7 @@ public class RequestManager {
 
     public void createLine(Point start) {
         Point end = new Point(start.x + 100, start.y);
-        Painting p = new client.component.Line(start, end);
+        Painting p = new Line(start, end);
         create req = new create(p);
         req.setCONNECTION_ID(CONNECTION_ID);
         try {
